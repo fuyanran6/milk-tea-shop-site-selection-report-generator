@@ -19,3 +19,11 @@ Thumbs.db
 # 视频文件（Gitee 单文件上限 100MB，根目录录屏不推送）
 *.mp4
 !app/static/video/usage-demo.mp4
+
+# 私人文档，不上传 Gitee
+产品需求文档.md
+产品需求文档 - 副本.md
+gpt奶茶店选址报告升级任务.docx
+gpt奶茶店选址报告升级任需要修改的地方务.docx
+高德截图.png
+report演示点.docx
