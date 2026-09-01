@@ -12,7 +12,6 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 import httpx
-from PIL import Image
 
 from app.pipeline.report_insights import map_headline
 
@@ -43,7 +42,7 @@ class MapLayerContext:
     title: str
     basemap_note: str
     basemap_ok: bool
-    basemap_image: Optional[Image.Image] = None
+    basemap_image: Optional[Any] = None
     tea_near: list[tuple[float, float]] = field(default_factory=list)
     tea_other: list[tuple[float, float]] = field(default_factory=list)
     indirect: list[tuple[float, float]] = field(default_factory=list)
@@ -69,7 +68,7 @@ def compute_basemap_zoom(lat: float, target_half_m: float, img_pixels: int) -> i
 def build_map_context(
     features: dict,
     amap_key: Optional[str] = None,
-    basemap_override: Optional[tuple[Image.Image, str]] = None,
+    basemap_override: Optional[tuple[Any, str]] = None,
 ) -> MapLayerContext:
     lng = features["location"]["lng"]
     lat = features["location"]["lat"]
@@ -150,7 +149,15 @@ def _collect_map_points(
 
 def fetch_amap_basemap(
     lng: float, lat: float, key: str,
-) -> tuple[Optional[Image.Image], list[float], str, bool]:
+) -> tuple[Optional[Any], list[float], str, bool]:
+    from app.pipeline.runtime import imaging_stack_available
+
+    if not imaging_stack_available():
+        cos_lat = max(0.7, abs(math.cos(math.radians(lat))))
+        return None, analysis_extent(lng, lat, cos_lat), "云端环境未加载图像库，仅显示分析图层", False
+
+    from PIL import Image
+
     width, height = BASEMAP_IMG_SIZE, BASEMAP_IMG_SIZE
     scale = BASEMAP_IMG_SCALE
     pixel_size = width * scale
@@ -217,7 +224,11 @@ def radius_deg(radius_m: float, cos_lat: float) -> float:
     return radius_m / (METERS_PER_DEG_LAT * cos_lat)
 
 
-def image_to_data_uri(img: Image.Image, fmt: str = "JPEG", *, quality: int = 88) -> str:
+def image_to_data_uri(img: Any, fmt: str = "JPEG", *, quality: int = 88) -> str:
+    from PIL import Image
+
+    if not isinstance(img, Image.Image):
+        raise TypeError("expected PIL Image")
     buf = io.BytesIO()
     if fmt.upper() == "JPEG":
         img.convert("RGB").save(buf, format="JPEG", quality=quality, optimize=True)

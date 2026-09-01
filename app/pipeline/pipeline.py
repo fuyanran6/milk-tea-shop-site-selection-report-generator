@@ -7,23 +7,39 @@ import shutil
 import uuid
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
-from app.paths import DEMO_DIR, OUTPUT_DIR
+from app.paths import DEMO_DIR, OUTPUT_DIR, ROOT
 from app.pipeline.amap_poi import fetch_poi_bundle
-from app.pipeline.export_charts import render_report_charts
 from app.pipeline.export_docx import export_docx
-from app.pipeline.export_png import render_analysis_png
-from app.pipeline.export_svg import render_analysis_svg
 from app.pipeline.features import build_evidence_table, build_features
 from app.pipeline.generate import generate_report
 from app.pipeline.geocode import geocode
-from app.pipeline.map_common import build_map_context
-from app.pipeline.scoring import compute_score
 from app.pipeline.report_state import validate_report_consistency
+from app.pipeline.runtime import imaging_stack_available
 from app.pipeline.validation import normalize_poi_bundle, run_report_qc
 
+from app.pipeline.scoring import compute_score
+
 DEMO_A_MAP = DEMO_DIR / "demo_a_map.png"
+PLACEHOLDER_PNG = ROOT / "app" / "static" / "placeholder-analysis.png"
+
+# 1x1 gray PNG — fallback when imaging stack unavailable
+_MINIMAL_PNG = (
+    b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
+    b"\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\x0cIDATx\x9cc\xf8\xcf\xc0"
+    b"\x00\x00\x00\x03\x00\x01\x00\x18\xdd\x8d\xb4\x00\x00\x00\x00IEND\xaeB`\x82"
+)
+
+
+def _ensure_png(path: Path, *, prefer: Optional[Path] = None) -> None:
+    if prefer and prefer.exists():
+        shutil.copy2(prefer, path)
+        return
+    if PLACEHOLDER_PNG.exists():
+        shutil.copy2(PLACEHOLDER_PNG, path)
+        return
+    path.write_bytes(_MINIMAL_PNG)
 
 
 def _format_poi_error(exc: BaseException) -> str:
@@ -128,9 +144,12 @@ async def run_pipeline(params: dict[str, Any]) -> dict[str, Any]:
     svg_path = out_dir / "analysis.svg"
     docx_path = out_dir / "report.docx"
 
+    from app.pipeline.export_svg import render_analysis_svg
+    from app.pipeline.map_common import build_map_context
+
     basemap_key = None if is_demo else amap_key
     basemap_override = None
-    if is_demo and demo_id in ("demo_a", "a") and DEMO_A_MAP.exists():
+    if imaging_stack_available() and is_demo and demo_id in ("demo_a", "a") and DEMO_A_MAP.exists():
         from PIL import Image
 
         basemap_override = (Image.open(DEMO_A_MAP).convert("RGB"), "街道底图：高德静态地图")
@@ -139,19 +158,30 @@ async def run_pipeline(params: dict[str, Any]) -> dict[str, Any]:
 
     if is_demo and demo_id in ("demo_a", "a") and DEMO_A_MAP.exists():
         shutil.copy2(DEMO_A_MAP, png_path)
-        basemap_note = map_ctx.basemap_note
-        basemap_ok = map_ctx.basemap_ok
-    else:
+        basemap_note = map_ctx.basemap_note or "街道底图：高德静态地图（演示）"
+        basemap_ok = True
+    elif imaging_stack_available():
+        from app.pipeline.export_png import render_analysis_png
+
         _, basemap_note, basemap_ok = render_analysis_png(
             features, png_path, amap_key=basemap_key, ctx=map_ctx
         )
+    else:
+        _ensure_png(png_path, prefer=DEMO_A_MAP if is_demo else None)
+        basemap_note = map_ctx.basemap_note or "云端环境：分析图已简化（无底图渲染）"
+        basemap_ok = bool(is_demo and DEMO_A_MAP.exists())
+
     render_analysis_svg(features, svg_path, ctx=map_ctx)
     features["basemap_note"] = basemap_note
     features["basemap_ok"] = basemap_ok
     if not basemap_ok and basemap_key and not is_demo:
         errors.append(f"高德静态底图：{basemap_note}")
 
-    chart_files = render_report_charts(features, score_result, out_dir)
+    chart_files: dict[str, list[str]] = {}
+    if imaging_stack_available():
+        from app.pipeline.export_charts import render_report_charts
+
+        chart_files = render_report_charts(features, score_result, out_dir)
     features["charts"] = chart_files
 
     report = await generate_report(

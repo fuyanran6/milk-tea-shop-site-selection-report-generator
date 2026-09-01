@@ -20,7 +20,6 @@ from fastapi.templating import Jinja2Templates
 
 from app.pipeline.geocode import search_locations
 from app.pipeline.osm import format_osm_note_for_appendix, format_osm_note_for_report
-from app.pipeline.pipeline import run_pipeline
 from app.users import (
     authenticate,
     create_session,
@@ -429,6 +428,8 @@ async def api_generate(
         "env_amap_key": os.getenv("AMAP_WEB_KEY", ""),
     }
     try:
+        from app.pipeline.pipeline import run_pipeline
+
         result = await run_pipeline(params)
         logger.info("generate_ok report_id=%s demo=%s", result["report_id"], bool(demo_id))
         return JSONResponse({"ok": True, "report_id": result["report_id"], "result": result})

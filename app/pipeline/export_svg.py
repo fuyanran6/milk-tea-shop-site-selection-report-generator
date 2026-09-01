@@ -5,9 +5,7 @@ from __future__ import annotations
 import html
 import math
 from pathlib import Path
-from typing import Optional
-
-from PIL import Image
+from typing import Any, Optional
 
 from app.pipeline.map_common import (
     COLOR_TEA_FAR,
@@ -38,7 +36,7 @@ def render_analysis_svg(
     output_path: Path,
     amap_key: Optional[str] = None,
     ctx: Optional[MapLayerContext] = None,
-    basemap_override: Optional[tuple[Image.Image, str]] = None,
+    basemap_override: Optional[tuple[Any, str]] = None,
 ) -> Path:
     if ctx is None:
         ctx = build_map_context(features, amap_key, basemap_override=basemap_override)
@@ -79,6 +77,10 @@ def _to_px(lng: float, lat: float, ctx: MapLayerContext) -> tuple[float, float]:
 def _group_basemap(ctx: MapLayerContext) -> str:
     ox, oy = _map_offset()
     if ctx.basemap_image is not None:
+        from PIL import Image
+
+        from app.pipeline.map_common import image_to_data_uri
+
         thumb = ctx.basemap_image.resize((MAP_W, MAP_H), Image.LANCZOS)
         href = image_to_data_uri(thumb, fmt="JPEG")
         return (
