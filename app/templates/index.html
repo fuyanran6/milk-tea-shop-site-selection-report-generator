@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{{ product_name }}</title>
+
+  <link rel="stylesheet" href="/static/css/style.css?v=12">
+
+</head>
+
+<body>
+
+  <header class="header">
+
+    <div class="header-bar">
+
+      <div class="header-brand">
+
+        <h1>{{ product_name }}</h1>
+
+        <p class="subtitle">对一个候选点做可溯源可行性评估 · 完整报告含决策摘要与下载</p>
+
+      </div>
+
+      <div class="header-user hidden" id="headerUser">
+
+        <button type="button" class="user-avatar" id="btnUserMenu" title="用户菜单" aria-label="用户菜单" aria-haspopup="true" aria-expanded="false">
+
+          <span id="avatarInitial">U</span>
+
+        </button>
+
+        <div class="user-dropdown hidden" id="userDropdown">
+
+          <div class="user-dropdown-name" id="dropdownUserName"></div>
+
+          <button type="button" id="btnOpenProfile">个人中心</button>
+
+          <button type="button" id="btnGoAnalyze">选址分析</button>
+
+          <button type="button" class="danger-text" id="btnLogout">退出账号</button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <main class="container">
+
+    <!-- 第一步：登录 / 注册 -->
+
+    <section class="card input-section" id="stepAuth">
+
+      <div class="step-badge">第一步</div>
+
+      <h2>登录或注册</h2>
+
+      <p class="hint">登录后可在个人中心保存高德 Key，下次无需重复填写。</p>
+
+
+
+      <div class="auth-tabs">
+
+        <button type="button" class="auth-tab active" data-tab="login" id="tabLogin">登录</button>
+
+        <button type="button" class="auth-tab" data-tab="register" id="tabRegister">注册</button>
+
+      </div>
+
+
+
+      <form id="loginForm" class="auth-form">
+
+        <label>用户名
+
+          <input type="text" id="loginUsername" autocomplete="username" placeholder="3～32 位字母、数字或下划线">
+
+        </label>
+
+        <label>密码
+
+          <input type="password" id="loginPassword" autocomplete="current-password" placeholder="至少 6 位">
+
+        </label>
+
+        <div class="actions">
+
+          <button type="submit" class="btn primary">登录</button>
+
+          <button type="button" class="btn secondary" id="btnSkipDemoAuth">跳过登录，使用演示点</button>
+
+        </div>
+
+      </form>
+
+
+
+      <form id="registerForm" class="auth-form hidden">
+
+        <label>用户名 <span class="req">*</span>
+
+          <input type="text" id="registerUsername" autocomplete="username" placeholder="3～32 位字母、数字或下划线">
+
+        </label>
+
+        <label>昵称（选填）
+
+          <input type="text" id="registerDisplayName" autocomplete="nickname" placeholder="显示在头像旁">
+
+        </label>
+
+        <label>密码 <span class="req">*</span>
+
+          <input type="password" id="registerPassword" autocomplete="new-password" placeholder="至少 6 位">
+
+        </label>
+
+        <label>确认密码 <span class="req">*</span>
+
+          <input type="password" id="registerPassword2" autocomplete="new-password">
+
+        </label>
+
+        <div class="actions">
+
+          <button type="submit" class="btn primary">注册并登录</button>
+
+        </div>
+
+      </form>
+
+
+
+      <div id="authError" class="error hidden"></div>
+
+    </section>
+
+
+
+    <!-- 个人中心：高德 Key -->
+
+    <section class="card input-section hidden" id="stepProfile">
+
+      <div class="step-badge">个人中心</div>
+
+      <h2>我的高德 Key</h2>
+
+      <p class="hint">Key 加密保存在本服务器，仅用于您的账号检索与生成报告。Web 服务 Key 不会回显完整内容。</p>
+
+      <p class="hint profile-user-line">当前账号：<strong id="profileUsername"></strong></p>
+
+
+
+      <label>高德 Web 服务 Key <span class="req">*</span>
+
+        <input type="password" id="profileWebKey" autocomplete="off" placeholder="留空则保持已保存的 Key 不变">
+
+      </label>
+
+      <p class="hint key-saved-hint" id="profileWebKeyHint"></p>
+
+      <label>高德 JS API Key <span class="req">*</span>
+
+        <input type="password" id="profileJsKey" autocomplete="off" placeholder="用于地图显示">
+
+      </label>
+
+      <p class="hint key-saved-hint" id="profileJsKeyHint"></p>
+
+      <label>安全密钥 securityJsCode（选填）
+
+        <input type="password" id="profileSecurityCode" autocomplete="off" placeholder="仅当 JS Key 启用了安全密钥时填写">
+
+      </label>
+
+      <p class="hint key-hint">
+
+        <strong>Web 服务 Key</strong> 与 <strong>JS API Key</strong> 须在高德控制台分别创建，不能混用。<br>
+
+        地点「检索」与生成报告走 Web 服务 Key；地图显示走 JS API Key。
+
+      </p>
+
+
+
+      <div class="actions">
+
+        <button type="button" class="btn primary" id="btnSaveKeys">保存 Key</button>
+
+        <button type="button" class="btn secondary" id="btnProfileToAnalyze">下一步：填写候选点</button>
+
+      </div>
+
+      <div id="profileError" class="error hidden"></div>
+
+      <div id="profileSuccess" class="success hidden"></div>
+
+    </section>
+
+
+
+    <!-- 第二步：候选点与经营信息 -->
+
+    <section class="card input-section hidden" id="stepForm">
+
+      <div class="step-badge">第二步</div>
+
+      <h2>输入候选点</h2>
+
+      <p class="hint" id="keyModeHint"></p>
+
+
+
+      <form id="generateForm">
+
+        <div class="grid-2">
+
+          <label>城市<input type="text" name="city" id="city" placeholder="如：上海市" value="上海市"></label>
+
+          <div class="place-search-field">
+
+            <span class="field-label">地点名</span>
+
+            <div class="place-search-row">
+
+              <input type="text" name="place_name" id="place_name" placeholder="如：某某商场" autocomplete="off">
+
+              <button type="button" class="btn secondary" id="btnSearchPlace">检索</button>
+
+            </div>
+
+            <p class="hint place-hint">输入名称后点「检索」，在下方列表中点选确认位置</p>
+
+          </div>
+
+        </div>
+
+        <div id="tips" class="tips-dropdown" role="listbox" aria-label="地点检索结果"></div>
+
+        <p id="searchStatus" class="search-status hidden"></p>
+
+        <label>详细地址（可选）<input type="text" name="address" id="address"></label>
+
+
+
+        <div class="map-box" id="mapBox">
+
+          <p class="map-hint" id="mapHint">点选检索结果后，地图将定位到该点；可拖拽标记微调落点</p>
+
+          <div id="mapCanvas" class="map-canvas"></div>
+
+          <div id="mapPlaceholder" class="map-placeholder hidden">
+
+            <p>演示模式：未加载高德地图，落点坐标已预设，可直接生成报告。</p>
+
+          </div>
+
+          <div class="coords">经度 <span id="lngDisplay">121.473701</span> · 纬度 <span id="latDisplay">31.230416</span></div>
+
+          <input type="hidden" name="lng" id="lng" value="121.473701">
+
+          <input type="hidden" name="lat" id="lat" value="31.230416">
+
+        </div>
+
+
+
+        <div class="optional-block">
+
+          <h3 class="optional-title">选填经营信息</h3>
+
+          <div class="grid-2">
+
+            <label>面积(㎡)<input type="number" name="area" step="0.1"></label>
+
+            <label>月租(元)<input type="number" name="rent" step="1"></label>
+
+            <label>品牌定位
+
+              <select name="brand_positioning" id="brand_positioning">
+
+                <option value="">未指定（默认即时饮品、年轻向）</option>
+
+                <option value="平价快取">平价快取</option>
+
+                <option value="大众连锁">大众连锁</option>
+
+                <option value="中端品质">中端品质</option>
+
+                <option value="高端精品">高端精品</option>
+
+              </select>
+
+            </label>
+
+            <label>客单价(元)<input type="number" name="price" step="0.1"></label>
+
+            <label>预估月营收(元)<input type="number" name="revenue" step="1"></label>
+
+            <label>预估日杯量<input type="number" name="daily_cups" step="1"></label>
+
+          </div>
+
+        </div>
+
+
+
+        <input type="hidden" name="amap_key" id="amap_key" value="">
+
+        <input type="hidden" name="demo_id" id="demo_id" value="">
+
+
+
+        <div class="actions">
+
+          <button type="button" class="btn ghost" id="btnBackProfile">个人中心</button>
+
+          <button type="button" class="btn secondary" id="demoA">演示点</button>
+
+          <button type="submit" class="btn primary" id="submitBtn">生成完整报告</button>
+
+        </div>
+
+      </form>
+
+      <div id="errorBox" class="error hidden"></div>
+
+      <div id="loading" class="loading hidden">正在取证、计分与生成报告…（真实地点约需 20～40 秒，请勿重复点击）</div>
+
+    </section>
+
+
+
+    <!-- 使用演示视频（第一步、第二步底部显示） -->
+
+    <section class="card demo-video-card hidden" id="demoVideoCard" aria-label="使用演示">
+
+      <h3 class="demo-video-title">使用演示</h3>
+
+      <video
+        class="demo-video"
+        id="usageDemoVideo"
+        autoplay
+        muted
+        playsinline
+        loop
+        controls
+        preload="auto"
+      >
+
+        <source src="/static/video/usage-demo.mp4" type="video/mp4">
+
+        您的浏览器不支持视频播放。
+
+      </video>
+
+    </section>
+
+  </main>
+
+
+
+  <footer class="footer">
+
+    <p>综合分为本工具规则，非法定标准 · 登录后可保存 Key · 也可使用演示点体验</p>
+
+  </footer>
+
+  <script src="/static/js/app.js?v=19"></script>
+
+</body>
+
+</html>
+
+

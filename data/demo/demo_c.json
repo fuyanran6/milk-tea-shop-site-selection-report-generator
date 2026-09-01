@@ -1,0 +1,42 @@
+{
+  "id": "demo_c",
+  "name": "评测点C · 混合型",
+  "description": "脱敏演示数据：中等竞争，办公+社区混合，用于 Prompt/阈值对比",
+  "city": "示例市",
+  "address": "示例市示例区示例大道示例商务楼",
+  "location": {"lng": 121.450000, "lat": 31.220000},
+  "scene_type": "mixed",
+  "query_time": "2026-08-21T10:00:00+08:00",
+  "data_source": "demo",
+  "poi_by_radius": {
+    "300": {
+      "tea_shops": [
+        {"name": "示例茶饮M", "distance_m": 90, "chain": true, "rating": 4.0},
+        {"name": "示例茶饮N", "distance_m": 200, "chain": false, "rating": 3.9},
+        {"name": "示例茶饮O", "distance_m": 260, "chain": true, "rating": 4.2}
+      ],
+      "categories": {"mall": 0, "dining": 8, "leisure": 2, "school": 0, "office": 3, "community": 2, "transit": 1, "hotel": 0}
+    },
+    "500": {
+      "tea_shops": [
+        {"name": "示例茶饮M", "distance_m": 90, "chain": true, "rating": 4.0},
+        {"name": "示例茶饮N", "distance_m": 200, "chain": false, "rating": 3.9},
+        {"name": "示例茶饮O", "distance_m": 260, "chain": true, "rating": 4.2},
+        {"name": "示例茶饮P", "distance_m": 380, "chain": false, "rating": 3.7}
+      ],
+      "categories": {"mall": 1, "dining": 15, "leisure": 4, "school": 0, "office": 6, "community": 4, "transit": 2, "hotel": 0}
+    },
+    "1000": {
+      "tea_shops": [],
+      "categories": {"mall": 2, "dining": 28, "leisure": 8, "school": 1, "office": 12, "community": 10, "transit": 3, "hotel": 1}
+    }
+  },
+  "transit": [
+    {"name": "示例商务站", "type": "subway", "distance_m": 450, "walk_distance_m": 520, "walk_note": "步行路径规划成功"},
+    {"name": "示例路口站", "type": "bus", "distance_m": 180, "walk_distance_m": null, "walk_note": "仅直线距离"}
+  ],
+  "buildings": [
+    {"id": "b1", "coords": [[121.4495, 31.2205], [121.4505, 31.2205], [121.4505, 31.2195], [121.4495, 31.2195]]},
+    {"id": "b2", "coords": [[121.4490, 31.2210], [121.4500, 31.2210], [121.4500, 31.2202], [121.4490, 31.2202]]}
+  ]
+}

@@ -1,0 +1,119 @@
+# 奶茶店选址评分配置 — 改阈值只改此文件
+# 综合分 = 需求35 + 竞争30 + 消费场景15 + 成本20（成本项需用户填写才计分）
+
+weights:
+  demand: 35
+  competition: 30
+  consumer_scene: 15
+  cost: 20
+
+recommendation_thresholds:
+  recommend: 75
+  cautious: 55
+
+# 300m 茶饮家数 → 竞争分（满分30）；分数越高表示竞争压力越低
+# 0 家竞争最宽松；家数越多分数越低
+competition_tiers:
+  - max_count: 0
+    score: 30
+    label: 高
+  - max_count: 2
+    score: 24
+    label: 中
+  - max_count: 5
+    score: 18
+    label: 中低
+  - max_count: 8
+    score: 12
+    label: 低
+  - max_count: 999
+    score: 8
+    label: 低
+
+# 需求匹配：按 500m 各类配套数量分档计分（满分35）
+# 场景类型（商场型/办公型等）不直接给分；有 1 家不等于拿满该类权重
+demand:
+  min_poi_total: 3
+  weak_demand_max_score: 8
+  category_weights:
+    mall: 8
+    school: 7
+    office: 7
+    community: 6
+    transit: 5
+    dining: 5
+    leisure: 3
+  # 每类：count <= max_count 时取该档分数；与竞争分一样单调、可解释
+  category_tiers:
+    mall:
+      - {max_count: 0, score: 0}
+      - {max_count: 2, score: 2}
+      - {max_count: 5, score: 4}
+      - {max_count: 10, score: 6}
+      - {max_count: 999, score: 8}
+    school:
+      - {max_count: 0, score: 0}
+      - {max_count: 2, score: 3}
+      - {max_count: 6, score: 5}
+      - {max_count: 999, score: 7}
+    office:
+      - {max_count: 0, score: 0}
+      - {max_count: 10, score: 2}
+      - {max_count: 30, score: 4}
+      - {max_count: 60, score: 6}
+      - {max_count: 999, score: 7}
+    community:
+      - {max_count: 0, score: 0}
+      - {max_count: 8, score: 2}
+      - {max_count: 20, score: 4}
+      - {max_count: 999, score: 6}
+    transit:
+      - {max_count: 0, score: 0}
+      - {max_count: 5, score: 2}
+      - {max_count: 15, score: 3}
+      - {max_count: 30, score: 4}
+      - {max_count: 999, score: 5}
+    dining:
+      - {max_count: 0, score: 0}
+      - {max_count: 10, score: 1}
+      - {max_count: 30, score: 3}
+      - {max_count: 60, score: 4}
+      - {max_count: 999, score: 5}
+    leisure:
+      - {max_count: 0, score: 0}
+      - {max_count: 8, score: 1}
+      - {max_count: 20, score: 2}
+      - {max_count: 999, score: 3}
+
+# 消费场景（满分15）
+consumer_scene:
+  dining_leisure_weight: 0.6
+  transit_weight: 0.4
+  transit_near_m: 500
+  transit_far_m: 1000
+
+# 成本风险（满分20，需月租 + 客单价或预估月营收）
+cost:
+  rent_ratio_veto: 0.30
+  ideal_rent_ratio: 0.15
+  max_score: 20
+
+# 否决规则（优先于分数）
+veto:
+  competition_dense_count: 9
+  competition_dense_max_recommendation: cautious
+  demand_too_low_poi_total: 2
+  rent_ratio_veto: 0.30
+
+# 建议档文案
+recommendation_labels:
+  recommend: 推荐选址
+  cautious: 谨慎选址
+  reject: 不推荐
+
+financial_unchecked_notice: >
+  财务未核：用户未提供租金等经营信息，本结论未包含能不能赚钱；仍建议结合租金与实地测算谨慎决策。
+
+score_disclaimer: 综合决策分为本工具规则，非法定标准；含财务评估时需同时参考经营可行性章节。
+
+score_disclaimer_unchecked: 点位评分为位置、竞争、需求等维度得分，未含财务评估，非法定标准。

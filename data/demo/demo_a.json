@@ -1,0 +1,130 @@
+{
+  "id": "demo_a",
+  "name": "演示点 · 人民广场商圈",
+  "description": "脱敏演示数据：对标 report演示点.docx（混合型、人民广场地图选点）",
+  "city": "上海市",
+  "address": "",
+  "location": {"lng": 121.473701, "lat": 31.230416},
+  "scene_type": "mixed",
+  "query_time": "2026-09-01T15:25:14+08:00",
+  "data_source": "demo",
+  "poi_meta": {
+    "category_capped": {
+      "dining": true,
+      "leisure": true,
+      "office": true,
+      "community": true,
+      "transit": true,
+      "hotel": true
+    },
+    "indirect_capped": true
+  },
+  "poi_by_radius": {
+    "300": {
+      "tea_shops": [
+        {"name": "蜜雪冰城(人民公园)", "distance_m": 253, "chain": true, "rating": 4.2, "competitor_type": "direct_tea"},
+        {"name": "太平洋牛乳茶(人民广场店)", "distance_m": 286, "chain": true, "rating": 3.9, "competitor_type": "direct_tea"}
+      ],
+      "indirect_beverages": [],
+      "categories": {
+        "mall": 1,
+        "dining": 44,
+        "leisure": 20,
+        "school": 0,
+        "office": 3,
+        "community": 2,
+        "transit": 10,
+        "hotel": 0
+      }
+    },
+    "500": {
+      "tea_shops": [
+        {"name": "蜜雪冰城(人民公园)", "distance_m": 253, "chain": true, "rating": 4.2, "competitor_type": "direct_tea"},
+        {"name": "太平洋牛乳茶(人民广场店)", "distance_m": 286, "chain": false, "rating": 3.9, "competitor_type": "direct_tea"},
+        {"name": "CoCo都可(人民广场店)", "distance_m": 310, "chain": true, "rating": 4.0, "competitor_type": "direct_tea"},
+        {"name": "喜茶(来福士店)", "distance_m": 340, "chain": true, "rating": 4.1, "competitor_type": "direct_tea"},
+        {"name": "奈雪的茶(世茂店)", "distance_m": 365, "chain": true, "rating": 4.0, "competitor_type": "direct_tea"},
+        {"name": "一点点(南京东路店)", "distance_m": 390, "chain": true, "rating": 4.0, "competitor_type": "direct_tea"},
+        {"name": "茶百道(西藏中路店)", "distance_m": 410, "chain": true, "rating": 4.1, "competitor_type": "direct_tea"},
+        {"name": "古茗(福州路店)", "distance_m": 430, "chain": true, "rating": 3.9, "competitor_type": "direct_tea"},
+        {"name": "沪上阿姨(汉口路店)", "distance_m": 455, "chain": true, "rating": 4.0, "competitor_type": "direct_tea"},
+        {"name": "书亦烧仙草(浙江中路店)", "distance_m": 475, "chain": true, "rating": 4.1, "competitor_type": "direct_tea"},
+        {"name": "益禾堂(九江路店)", "distance_m": 485, "chain": true, "rating": 4.1, "competitor_type": "direct_tea"},
+        {"name": "甜啦啦(福建中路店)", "distance_m": 495, "chain": false, "rating": 3.9, "competitor_type": "direct_tea"}
+      ],
+      "indirect_beverages": [],
+      "categories": {
+        "mall": 11,
+        "dining": 100,
+        "leisure": 100,
+        "school": 6,
+        "office": 96,
+        "community": 35,
+        "transit": 45,
+        "hotel": 36
+      }
+    },
+    "1000": {
+      "tea_shops": [],
+      "indirect_beverages": [],
+      "categories": {
+        "mall": 46,
+        "dining": 100,
+        "leisure": 100,
+        "school": 32,
+        "office": 100,
+        "community": 100,
+        "transit": 100,
+        "hotel": 100
+      }
+    }
+  },
+  "transit": [
+    {
+      "name": "人民广场地铁站",
+      "type": "subway",
+      "distance_m": 202,
+      "walk_distance_m": 680,
+      "walk_note": "步行路径规划成功"
+    },
+    {
+      "name": "人民广场(地铁站)",
+      "type": "subway",
+      "distance_m": 216,
+      "walk_distance_m": null,
+      "walk_note": "仅直线距离"
+    },
+    {
+      "name": "上海城市规划展示馆(地铁站)",
+      "type": "subway",
+      "distance_m": 216,
+      "walk_distance_m": null,
+      "walk_note": "仅直线距离"
+    },
+    {
+      "name": "人民广场地铁站2号口",
+      "type": "subway",
+      "distance_m": 221,
+      "walk_distance_m": null,
+      "walk_note": "仅直线距离"
+    },
+    {
+      "name": "人民广场地铁站3号口",
+      "type": "subway",
+      "distance_m": 261,
+      "walk_distance_m": null,
+      "walk_note": "仅直线距离"
+    }
+  ],
+  "buildings": [
+    {
+      "id": "b1",
+      "coords": [
+        [121.4732, 31.2308],
+        [121.4742, 31.2308],
+        [121.4742, 31.2300],
+        [121.4732, 31.2300]
+      ]
+    }
+  ]
+}

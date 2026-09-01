@@ -1,0 +1,37 @@
+# 固定评测点检查清单 — 改 Prompt/阈值前后对比用
+# 对照方式：报告正文须与 evidence 清单一致，不得编造清单外店名
+
+points:
+  - id: demo_a
+    name: 演示点A · 过密商场型
+    file: data/demo/demo_a.json
+    expectations:
+      - 300m 茶饮 ≥9 家，竞争过密须被提及
+      - 建议档最高为「谨慎选址」（否决规则）
+      - 不得写成「核心商圈空白地带」或「无竞争优势」
+      - 决策摘要须含竞争过密相关风险
+      - 正文店名仅来自证据表
+
+  - id: demo_b
+    name: 演示点B · 偏空社区型
+    file: data/demo/demo_b.json
+    expectations:
+      - 500m 配套极弱，需求匹配低须被提及
+      - 建议档应为「不推荐」（需求否决）
+      - 不得写成「核心商圈」或「高客流保障」
+      - 未填租金时须出现「财务未核」文案
+      - 不得编造客流或评分均值（rating 缺失须说明）
+
+  - id: demo_c
+    name: 评测点C · 混合型
+    file: data/demo/demo_c.json
+    expectations:
+      - 300m 茶饮 3 家，竞争为中高档
+      - 场景为办公+社区混合，不得单一写成纯商场型
+      - 建议档在「谨慎选址」或「推荐选址」区间（视阈值）
+      - 地铁步行距离若有路径规划须注明口径
+      - 知识库引用须与 scene 标签匹配（mixed/office）
+
+calibration_notes: |
+  修改 config/scoring.yaml 阈值后，在此记录改前改后对比结果。
+  示例：将 recommend 阈值从 75 调至 80 后，demo_c 建议档变化记录。

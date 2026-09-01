@@ -1,0 +1,21 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.log
+output/
+tmp/
+data/users.db
+.DS_Store
+Thumbs.db
+
+# 视频文件（Gitee 单文件上限 100MB，根目录录屏不推送）
+*.mp4
+!app/static/video/usage-demo.mp4

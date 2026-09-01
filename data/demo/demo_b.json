@@ -1,0 +1,31 @@
+{
+  "id": "demo_b",
+  "name": "演示点B · 偏空社区型",
+  "description": "脱敏演示数据：500m 配套极弱，需求匹配低",
+  "city": "示例市",
+  "address": "示例市示例区示例街道示例社区",
+  "location": {"lng": 121.400000, "lat": 31.200000},
+  "scene_type": "community",
+  "query_time": "2026-08-21T10:00:00+08:00",
+  "data_source": "demo",
+  "poi_by_radius": {
+    "300": {
+      "tea_shops": [],
+      "categories": {"mall": 0, "dining": 1, "leisure": 0, "school": 0, "office": 0, "community": 2, "transit": 0, "hotel": 0}
+    },
+    "500": {
+      "tea_shops": [{"name": "示例小铺", "distance_m": 420, "chain": false, "rating": null}],
+      "categories": {"mall": 0, "dining": 2, "leisure": 0, "school": 0, "office": 0, "community": 4, "transit": 1, "hotel": 0}
+    },
+    "1000": {
+      "tea_shops": [],
+      "categories": {"mall": 0, "dining": 5, "leisure": 1, "school": 0, "office": 1, "community": 8, "transit": 2, "hotel": 0}
+    }
+  },
+  "transit": [
+    {"name": "示例社区公交站", "type": "bus", "distance_m": 680, "walk_distance_m": null, "walk_note": "仅直线距离，500m内无地铁"}
+  ],
+  "buildings": [
+    {"id": "b1", "coords": [[121.3995, 31.2005], [121.4005, 31.2005], [121.4005, 31.1995], [121.3995, 31.1995]]}
+  ]
+}

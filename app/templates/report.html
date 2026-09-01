@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>可行性报告 · {{ result.features.address }}</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=13">
+</head>
+<body>
+  <header class="header compact">
+    <h1>奶茶店选址可行性报告</h1>
+    <p>{{ result.features.address }} · 综合分 {{ result.score.total_score }}/100 · {{ result.score.recommendation }}</p>
+  </header>
+
+  <div class="container">
+    <p class="back-link"><a href="/?step=2">← 返回重新选点分析</a></p>
+  </div>
+
+  <nav class="chapter-nav" id="chapterNav">
+    {% for ch in result.report.chapter_order %}
+    <a href="#{{ ch.key }}">{{ loop.index }}. {{ ch.title }}</a>
+    {% endfor %}
+  </nav>
+
+  <main class="container report-container">
+    {% if result.features.data_source == 'demo' %}
+    <section class="card demo-report-banner" role="note">
+      <strong>演示点报告</strong>
+      <p>本报告基于内置演示数据生成，用于产品功能展示与体验，不代表对真实候选地址的分析结论。</p>
+    </section>
+    {% endif %}
+    <section class="score-banner">
+      <div class="score-main">{{ result.score.total_score }}<span>/100</span></div>
+      <div class="score-rec">{{ result.score.recommendation }}</div>
+      {% if result.score.financial_unchecked_notice %}
+      <div class="financial-warning">{{ result.score.financial_unchecked_notice }}</div>
+      {% endif %}
+      <div class="subscores">
+        {% set zh = {'demand':'需求匹配','competition':'竞争环境','consumer_scene':'消费场景','cost':'财务评估'} %}
+        {% for name, sub in result.score.subscores.items() %}
+        <span>{{ zh.get(name, name) }}: {% if sub.score is not none %}{{ sub.score }}/{{ sub.max }}{% else %}未评分{% endif %}</span>
+        {% endfor %}
+      </div>
+    </section>
+
+    {% for ch in result.report.chapter_order %}
+    <section class="card chapter" id="{{ ch.key }}">
+      <h2>{{ loop.index }}. {{ ch.title }}</h2>
+      {% if result.report.chapters[ch.key].headline %}
+      <p class="chapter-headline"><strong>{{ result.report.chapters[ch.key].headline }}</strong></p>
+      {% endif %}
+      <div class="chapter-body">{{ result.report.chapters[ch.key].content_html | safe }}</div>
+      {% if result.charts and result.charts.get(ch.key) %}
+      <div class="chapter-charts">
+        {% for chart in result.charts[ch.key] %}
+        <img src="/download/{{ report_id }}/chart/{{ chart }}" alt="分析图表" class="analysis-chart">
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if ch.key == 'map' %}
+      <img src="/download/{{ report_id }}/png" alt="选址分析图" class="analysis-map">
+      {% endif %}
+    </section>
+    {% endfor %}
+
+    <details class="card collapsible">
+      <summary>本次证据清单（claim → source）</summary>
+      <table class="evidence-table">
+        <thead><tr><th>ID</th><th>结论</th><th>来源</th></tr></thead>
+        <tbody>
+        {% for ev in result.evidence %}
+        <tr><td>{{ ev.claim_id }}</td><td>{{ ev.claim }}</td><td>{{ ev.source }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </details>
+
+    <details class="card collapsible">
+      <summary>本次知识库引用</summary>
+      <ul>
+      {% for key, hits in result.report.rag_hits.items() %}
+        {% for doc in hits %}
+        <li>[{{ key }}] {{ doc.filename }} — {{ doc.title }}</li>
+        {% endfor %}
+      {% endfor %}
+      </ul>
+    </details>
+
+    <section class="card downloads">
+      <h2>下载</h2>
+      <div class="download-links">
+        <a class="btn primary" href="/download/{{ report_id }}/docx">下载 Word</a>
+        <a class="btn secondary" href="/download/{{ report_id }}/png">下载 PNG</a>
+        <a class="btn secondary" href="/download/{{ report_id }}/svg">下载 SVG</a>
+      </div>
+    </section>
+
+    <section class="card report-back">
+      <a class="btn primary" href="/?step=2">返回重新选点分析</a>
+    </section>
+  </main>
+</body>
+</html>
