@@ -1,0 +1,11 @@
+output/
+tmp/
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.cursor/
+*.docx
+qa_v4.txt
+tmp_docx_text.txt
+高德截图.png

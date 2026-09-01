@@ -51,7 +51,26 @@ uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 
 ## 公网部署与二维码
 
-部署到任意 PaaS（Railway、Render、云服务器等）后，把公网 URL 生成二维码即可扫码打开——**二维码只是 URL 入口**，本期已实现网页本身。
+部署到任意 PaaS（Railway、Render、Vercel、云服务器等）后，把公网 URL 生成二维码即可扫码打开——**二维码只是 URL 入口**，本期已实现网页本身。
+
+### 部署到 Vercel
+
+1. 将代码推送到 GitHub / Gitee / GitLab
+2. 打开 [vercel.com/new](https://vercel.com/new)，导入仓库
+3. Vercel 会自动识别 FastAPI（入口：`app/main.py`），无需额外构建命令
+4. 在 **Settings → Environment Variables** 配置（可选）：
+   - `AMAP_WEB_KEY` / `AMAP_JS_KEY` / `AMAP_SECURITY_JS_CODE` — 高德 Key
+   - `LLM_API_KEY` / `LLM_API_BASE` / `LLM_MODEL` — AI 正文生成
+5. 点击 Deploy
+
+**说明**：Vercel 为无状态环境，用户账号与报告文件写入 `/tmp`；报告页通过 sessionStorage 兜底加载。Word/PNG 下载在同一次会话内可用，刷新后可能失效。演示点无需 Key 即可体验。
+
+本地 CLI 部署：
+
+```powershell
+npx vercel login
+npx vercel --prod
+```
 
 ## 目录结构
 

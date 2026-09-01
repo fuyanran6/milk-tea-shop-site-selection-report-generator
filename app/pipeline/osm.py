@@ -5,13 +5,11 @@ from __future__ import annotations
 import hashlib
 import json
 import time
-from pathlib import Path
 from typing import Any, List, Tuple
 
 import httpx
 
-ROOT = Path(__file__).resolve().parents[2]
-CACHE_DIR = ROOT / "tmp" / "osm_cache"
+from app.paths import OSM_CACHE_DIR as CACHE_DIR
 CACHE_TTL_SECONDS = 3600
 
 # 多节点容错；部分节点对缺 User-Agent / Content-Type 会返回 406

@@ -1168,6 +1168,14 @@
 
       }
 
+      if (data.result && data.report_id) {
+        try {
+          sessionStorage.setItem("report:" + data.report_id, JSON.stringify(data.result));
+        } catch (err) {
+          /* quota exceeded — server may still have the file */
+        }
+      }
+
       window.location.href = "/report/" + data.report_id;
 
     } catch (err) {

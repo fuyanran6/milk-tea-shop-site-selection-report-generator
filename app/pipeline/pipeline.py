@@ -9,6 +9,7 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
 
+from app.paths import DEMO_DIR, OUTPUT_DIR
 from app.pipeline.amap_poi import fetch_poi_bundle
 from app.pipeline.export_charts import render_report_charts
 from app.pipeline.export_docx import export_docx
@@ -22,10 +23,7 @@ from app.pipeline.scoring import compute_score
 from app.pipeline.report_state import validate_report_consistency
 from app.pipeline.validation import normalize_poi_bundle, run_report_qc
 
-ROOT = Path(__file__).resolve().parents[2]
-DEMO_DIR = ROOT / "data" / "demo"
 DEMO_A_MAP = DEMO_DIR / "demo_a_map.png"
-OUTPUT_DIR = ROOT / "output"
 
 
 def _format_poi_error(exc: BaseException) -> str:
@@ -184,9 +182,9 @@ async def run_pipeline(params: dict[str, Any]) -> dict[str, Any]:
         "charts": chart_files,
         "errors": errors,
         "exports": {
-            "png": str(png_path.relative_to(ROOT)).replace("\\", "/"),
-            "svg": str(svg_path.relative_to(ROOT)).replace("\\", "/"),
-            "docx": str(docx_path.relative_to(ROOT)).replace("\\", "/"),
+            "png": png_path.name,
+            "svg": svg_path.name,
+            "docx": docx_path.name,
         },
     }
     result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str), encoding="utf-8")

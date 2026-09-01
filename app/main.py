@@ -8,6 +8,7 @@ import os
 import re
 import time
 from collections import defaultdict
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Optional
 
@@ -31,14 +32,26 @@ from app.users import (
     update_user_keys,
 )
 
-ROOT = Path(__file__).resolve().parents[1]
+from app.paths import OUTPUT_DIR, ROOT
 load_dotenv(ROOT / ".env")
-init_db()
 
 SESSION_COOKIE = "session_token"
 SESSION_MAX_AGE = 30 * 24 * 3600
 
-app = FastAPI(title="奶茶店选址 AI 分析评估助手")
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("site_assessor")
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    try:
+        init_db()
+    except Exception:
+        logger.exception("Database init failed — auth disabled for this instance")
+    yield
+
+
+app = FastAPI(title="奶茶店选址 AI 分析评估助手", lifespan=lifespan)
 templates = Jinja2Templates(directory=str(ROOT / "app" / "templates"))
 
 
@@ -187,9 +200,6 @@ def _inline_md(text: str) -> str:
 
 templates.env.filters["render_chapter"] = _render_chapter_content  # 备用，报告页在 Python 侧预处理
 app.mount("/static", StaticFiles(directory=str(ROOT / "app" / "static")), name="static")
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("site_assessor")
 
 RATE_LIMIT = int(os.getenv("RATE_LIMIT_PER_MINUTE", "10"))
 _hits = defaultdict(list)
@@ -421,7 +431,7 @@ async def api_generate(
     try:
         result = await run_pipeline(params)
         logger.info("generate_ok report_id=%s demo=%s", result["report_id"], bool(demo_id))
-        return JSONResponse({"ok": True, "report_id": result["report_id"]})
+        return JSONResponse({"ok": True, "report_id": result["report_id"], "result": result})
     except ValueError as exc:
         logger.warning("generate_fail reason=user_input")
         raise HTTPException(status_code=400, detail=str(exc))
@@ -451,6 +461,38 @@ def _sanitize_legacy_osm_text(text: str, *, for_appendix: bool = False) -> str:
     return text
 
 
+def _prepare_report_result(result: dict) -> dict:
+    result = _sanitize_legacy_report(result)
+    for ch in result.get("report", {}).get("chapters", {}).values():
+        ch["content_html"] = _render_chapter_content(ch.get("content", ""))
+    return result
+
+
+def _report_context(result: dict, report_id: str) -> dict:
+    return {
+        "result": result,
+        "report_id": report_id,
+    }
+
+
+@app.post("/api/render-report", response_class=HTMLResponse)
+async def api_render_report(request: Request):
+    """Serverless fallback: render report HTML from client sessionStorage payload."""
+    try:
+        payload = await request.json()
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="无效请求") from exc
+    report_id = (payload.get("report_id") or "").strip()
+    result = payload.get("result")
+    if not report_id or not isinstance(result, dict):
+        raise HTTPException(status_code=400, detail="缺少报告数据")
+    result = _prepare_report_result(result)
+    return templates.TemplateResponse("report.html", {
+        "request": request,
+        **_report_context(result, report_id),
+    })
+
+
 def _sanitize_legacy_report(result: dict) -> dict:
     chapters = result.get("report", {}).get("chapters", {})
     for key, ch in chapters.items():
@@ -463,14 +505,19 @@ def _sanitize_legacy_report(result: dict) -> dict:
 
 @app.get("/report/{report_id}", response_class=HTMLResponse)
 async def report_page(request: Request, report_id: str):
-    result = _sanitize_legacy_report(_load_result(report_id))
-    for ch in result.get("report", {}).get("chapters", {}).values():
-        ch["content_html"] = _render_chapter_content(ch.get("content", ""))
-    return templates.TemplateResponse("report.html", {
-        "request": request,
-        "result": result,
-        "report_id": report_id,
-    })
+    try:
+        result = _prepare_report_result(_load_result(report_id))
+        return templates.TemplateResponse("report.html", {
+            "request": request,
+            **_report_context(result, report_id),
+        })
+    except HTTPException as exc:
+        if exc.status_code != 404:
+            raise
+        return templates.TemplateResponse("report_hydrate.html", {
+            "request": request,
+            "report_id": report_id,
+        })
 
 
 @app.get("/download/{report_id}/{file_type}")
@@ -481,7 +528,7 @@ async def download(report_id: str, file_type: str):
     key = mapping.get(file_type)
     if not key or key not in exports:
         raise HTTPException(status_code=404, detail="文件不存在")
-    path = ROOT / exports[key]
+    path = OUTPUT_DIR / report_id / Path(exports[key]).name
     if not path.exists():
         raise HTTPException(status_code=404, detail="文件不存在")
     media = {
@@ -496,14 +543,14 @@ async def download(report_id: str, file_type: str):
 async def download_chart(report_id: str, chart_name: str):
     if ".." in chart_name or "/" in chart_name or "\\" in chart_name:
         raise HTTPException(status_code=400, detail="非法文件名")
-    path = ROOT / "output" / report_id / chart_name
+    path = OUTPUT_DIR / report_id / chart_name
     if not path.exists() or not path.is_file():
         raise HTTPException(status_code=404, detail="图表不存在")
     return FileResponse(path, media_type="image/png", filename=chart_name)
 
 
 def _load_result(report_id: str) -> dict:
-    path = ROOT / "output" / report_id / "result.json"
+    path = OUTPUT_DIR / report_id / "result.json"
     if not path.exists():
         raise HTTPException(status_code=404, detail="报告不存在或已过期")
     return json.loads(path.read_text(encoding="utf-8"))

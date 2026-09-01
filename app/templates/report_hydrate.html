@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>加载报告…</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=13">
+</head>
+<body>
+  <div class="container" style="padding:3rem 1rem;text-align:center;">
+    <p id="status">正在加载报告…</p>
+    <p class="back-link"><a href="/?step=2">← 返回重新选点分析</a></p>
+  </div>
+  <script>
+  (function () {
+    var reportId = {{ report_id | tojson }};
+    var key = "report:" + reportId;
+    var raw = sessionStorage.getItem(key);
+    var status = document.getElementById("status");
+    if (!raw) {
+      status.textContent = "报告已过期或未找到。请返回重新生成。";
+      return;
+    }
+    fetch("/api/render-report", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ report_id: reportId, result: JSON.parse(raw) })
+    }).then(function (resp) {
+      if (!resp.ok) throw new Error("渲染失败");
+      return resp.text();
+    }).then(function (html) {
+      document.open();
+      document.write(html);
+      document.close();
+    }).catch(function () {
+      status.textContent = "报告加载失败，请返回重新生成。";
+    });
+  })();
+  </script>
+</body>
+</html>

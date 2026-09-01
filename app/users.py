@@ -10,15 +10,30 @@ import time
 from pathlib import Path
 from typing import Any, Optional
 
-ROOT = Path(__file__).resolve().parents[1]
-DB_PATH = ROOT / "data" / "users.db"
+from app.paths import DB_PATH as _DEFAULT_DB_PATH
+
 SESSION_TTL_SEC = 30 * 24 * 3600
 _USERNAME_RE = re.compile(r"^[a-zA-Z0-9_]{3,32}$")
+_RUNTIME_DB_PATH: Optional[Path] = None
+
+
+def _db_path() -> Path:
+    global _RUNTIME_DB_PATH
+    if _RUNTIME_DB_PATH is not None:
+        return _RUNTIME_DB_PATH
+    return _DEFAULT_DB_PATH
 
 
 def _connect() -> sqlite3.Connection:
-    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(str(DB_PATH))
+    path = _db_path()
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        conn = sqlite3.connect(str(path))
+    except OSError:
+        global _RUNTIME_DB_PATH
+        _RUNTIME_DB_PATH = Path("/tmp/site-assessor/data/users.db")
+        _RUNTIME_DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+        conn = sqlite3.connect(str(_RUNTIME_DB_PATH))
     conn.row_factory = sqlite3.Row
     return conn
 
