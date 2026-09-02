@@ -12,7 +12,6 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Optional
 
-from dotenv import load_dotenv
 from fastapi import Cookie, Depends, FastAPI, Form, HTTPException, Query, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -32,7 +31,13 @@ from app.users import (
 )
 
 from app.paths import OUTPUT_DIR, ROOT
-load_dotenv(ROOT / ".env")
+
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(ROOT / ".env")
+except ImportError:
+    pass
 
 SESSION_COOKIE = "session_token"
 SESSION_MAX_AGE = 30 * 24 * 3600
