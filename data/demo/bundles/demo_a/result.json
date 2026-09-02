@@ -1,0 +1,1836 @@
+{
+  "report_id": "demo_a",
+  "features": {
+    "address": "上海市 · 地图选点（经度 121.473701，纬度 31.230416）",
+    "city": "上海市",
+    "location": {
+      "lng": 121.473701,
+      "lat": 31.230416
+    },
+    "category_capped": {
+      "dining": true,
+      "leisure": true,
+      "office": true,
+      "community": true,
+      "transit": true,
+      "hotel": true
+    },
+    "indirect_capped": true,
+    "scene_type": "mixed",
+    "scene_label": "混合型",
+    "query_time": "2026-09-01T15:25:14+08:00",
+    "data_source": "demo",
+    "tea_count_300m": 2,
+    "tea_count_500m": 12,
+    "indirect_count_300m": 5,
+    "indirect_count_500m": 42,
+    "indirect_coffee_300m": 5,
+    "categories_300m": {
+      "mall": 1,
+      "dining": 44,
+      "leisure": 20,
+      "school": 0,
+      "office": 3,
+      "community": 2,
+      "transit": 10,
+      "hotel": 0
+    },
+    "categories_500m": {
+      "mall": 11,
+      "dining": 100,
+      "leisure": 100,
+      "school": 6,
+      "office": 96,
+      "community": 35,
+      "transit": 45,
+      "hotel": 36
+    },
+    "categories_1000m": {
+      "mall": 46,
+      "dining": 100,
+      "leisure": 100,
+      "school": 32,
+      "office": 100,
+      "community": 100,
+      "transit": 100,
+      "hotel": 100
+    },
+    "tea_shops_300m": [
+      {
+        "name": "蜜雪冰城(人民公园)",
+        "distance_m": 253,
+        "chain": true,
+        "rating": 4.2,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "太平洋牛乳茶(人民广场店)",
+        "distance_m": 286,
+        "chain": false,
+        "rating": 3.9,
+        "competitor_type": "direct_tea"
+      }
+    ],
+    "tea_shops_500m": [
+      {
+        "name": "蜜雪冰城(人民公园)",
+        "distance_m": 253,
+        "chain": true,
+        "rating": 4.2,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "太平洋牛乳茶(人民广场店)",
+        "distance_m": 286,
+        "chain": false,
+        "rating": 3.9,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "CoCo都可(人民广场店)",
+        "distance_m": 310,
+        "chain": true,
+        "rating": 4.0,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "喜茶(来福士店)",
+        "distance_m": 340,
+        "chain": true,
+        "rating": 4.1,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "奈雪的茶(世茂店)",
+        "distance_m": 365,
+        "chain": true,
+        "rating": 4.0,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "一点点(南京东路店)",
+        "distance_m": 390,
+        "chain": true,
+        "rating": 4.0,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "茶百道(西藏中路店)",
+        "distance_m": 410,
+        "chain": true,
+        "rating": 4.1,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "古茗(福州路店)",
+        "distance_m": 430,
+        "chain": true,
+        "rating": 3.9,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "沪上阿姨(汉口路店)",
+        "distance_m": 455,
+        "chain": true,
+        "rating": 4.0,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "书亦烧仙草(浙江中路店)",
+        "distance_m": 475,
+        "chain": true,
+        "rating": 4.1,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "益禾堂(九江路店)",
+        "distance_m": 485,
+        "chain": true,
+        "rating": 4.1,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "甜啦啦(福建中路店)",
+        "distance_m": 495,
+        "chain": false,
+        "rating": 3.9,
+        "competitor_type": "direct_tea"
+      }
+    ],
+    "tea_shops_1000m": [
+      {
+        "name": "蜜雪冰城(人民公园)",
+        "distance_m": 253,
+        "chain": true,
+        "rating": 4.2,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "太平洋牛乳茶(人民广场店)",
+        "distance_m": 286,
+        "chain": false,
+        "rating": 3.9,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "CoCo都可(人民广场店)",
+        "distance_m": 310,
+        "chain": true,
+        "rating": 4.0,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "喜茶(来福士店)",
+        "distance_m": 340,
+        "chain": true,
+        "rating": 4.1,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "奈雪的茶(世茂店)",
+        "distance_m": 365,
+        "chain": true,
+        "rating": 4.0,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "一点点(南京东路店)",
+        "distance_m": 390,
+        "chain": true,
+        "rating": 4.0,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "茶百道(西藏中路店)",
+        "distance_m": 410,
+        "chain": true,
+        "rating": 4.1,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "古茗(福州路店)",
+        "distance_m": 430,
+        "chain": true,
+        "rating": 3.9,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "沪上阿姨(汉口路店)",
+        "distance_m": 455,
+        "chain": true,
+        "rating": 4.0,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "书亦烧仙草(浙江中路店)",
+        "distance_m": 475,
+        "chain": true,
+        "rating": 4.1,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "益禾堂(九江路店)",
+        "distance_m": 485,
+        "chain": true,
+        "rating": 4.1,
+        "competitor_type": "direct_tea"
+      },
+      {
+        "name": "甜啦啦(福建中路店)",
+        "distance_m": 495,
+        "chain": false,
+        "rating": 3.9,
+        "competitor_type": "direct_tea"
+      }
+    ],
+    "indirect_beverages_300m": [
+      {
+        "name": "示例咖啡1",
+        "distance_m": 95,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡2",
+        "distance_m": 128,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡3",
+        "distance_m": 155,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡4",
+        "distance_m": 188,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡5",
+        "distance_m": 235,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      }
+    ],
+    "indirect_beverages_500m": [
+      {
+        "name": "示例咖啡1",
+        "distance_m": 95,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡2",
+        "distance_m": 128,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡3",
+        "distance_m": 155,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡4",
+        "distance_m": 188,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡5",
+        "distance_m": 235,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡6",
+        "distance_m": 310,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡7",
+        "distance_m": 315,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡8",
+        "distance_m": 320,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡9",
+        "distance_m": 325,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡10",
+        "distance_m": 330,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡11",
+        "distance_m": 335,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡12",
+        "distance_m": 340,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡13",
+        "distance_m": 345,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡14",
+        "distance_m": 350,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡15",
+        "distance_m": 355,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡16",
+        "distance_m": 360,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡17",
+        "distance_m": 365,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡18",
+        "distance_m": 370,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡19",
+        "distance_m": 375,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡20",
+        "distance_m": 380,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡21",
+        "distance_m": 385,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡22",
+        "distance_m": 390,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡23",
+        "distance_m": 395,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡24",
+        "distance_m": 400,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡25",
+        "distance_m": 405,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡26",
+        "distance_m": 410,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡27",
+        "distance_m": 415,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡28",
+        "distance_m": 420,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡29",
+        "distance_m": 425,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡30",
+        "distance_m": 430,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡31",
+        "distance_m": 435,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡32",
+        "distance_m": 440,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡33",
+        "distance_m": 445,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡34",
+        "distance_m": 450,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡35",
+        "distance_m": 455,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡36",
+        "distance_m": 460,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡37",
+        "distance_m": 465,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡38",
+        "distance_m": 470,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡39",
+        "distance_m": 475,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡40",
+        "distance_m": 480,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡41",
+        "distance_m": 485,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡42",
+        "distance_m": 490,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      }
+    ],
+    "indirect_beverages_1000m": [
+      {
+        "name": "示例咖啡1",
+        "distance_m": 95,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡2",
+        "distance_m": 128,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡3",
+        "distance_m": 155,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡4",
+        "distance_m": 188,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡5",
+        "distance_m": 235,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡6",
+        "distance_m": 310,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡7",
+        "distance_m": 315,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡8",
+        "distance_m": 320,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡9",
+        "distance_m": 325,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡10",
+        "distance_m": 330,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡11",
+        "distance_m": 335,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡12",
+        "distance_m": 340,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡13",
+        "distance_m": 345,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡14",
+        "distance_m": 350,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡15",
+        "distance_m": 355,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡16",
+        "distance_m": 360,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡17",
+        "distance_m": 365,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡18",
+        "distance_m": 370,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡19",
+        "distance_m": 375,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡20",
+        "distance_m": 380,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡21",
+        "distance_m": 385,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡22",
+        "distance_m": 390,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡23",
+        "distance_m": 395,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡24",
+        "distance_m": 400,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡25",
+        "distance_m": 405,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡26",
+        "distance_m": 410,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡27",
+        "distance_m": 415,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡28",
+        "distance_m": 420,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡29",
+        "distance_m": 425,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡30",
+        "distance_m": 430,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡31",
+        "distance_m": 435,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡32",
+        "distance_m": 440,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡33",
+        "distance_m": 445,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡34",
+        "distance_m": 450,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡35",
+        "distance_m": 455,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡36",
+        "distance_m": 460,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡37",
+        "distance_m": 465,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡38",
+        "distance_m": 470,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡39",
+        "distance_m": 475,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡40",
+        "distance_m": 480,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡41",
+        "distance_m": 485,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡42",
+        "distance_m": 490,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡远场550",
+        "distance_m": 550,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡远场600",
+        "distance_m": 600,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡远场650",
+        "distance_m": 650,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡远场700",
+        "distance_m": 700,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡远场750",
+        "distance_m": 750,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡远场800",
+        "distance_m": 800,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡远场850",
+        "distance_m": 850,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      },
+      {
+        "name": "示例咖啡远场900",
+        "distance_m": 900,
+        "competitor_type": "indirect_beverage",
+        "beverage_subtype": "coffee"
+      }
+    ],
+    "transit": [
+      {
+        "name": "人民广场地铁站",
+        "type": "subway",
+        "distance_m": 202,
+        "walk_distance_m": 680,
+        "walk_note": "步行路径规划成功"
+      },
+      {
+        "name": "人民广场(地铁站)",
+        "type": "subway",
+        "distance_m": 216,
+        "walk_distance_m": null,
+        "walk_note": "仅直线距离"
+      },
+      {
+        "name": "上海城市规划展示馆(地铁站)",
+        "type": "subway",
+        "distance_m": 216,
+        "walk_distance_m": null,
+        "walk_note": "仅直线距离"
+      },
+      {
+        "name": "人民广场地铁站2号口",
+        "type": "subway",
+        "distance_m": 221,
+        "walk_distance_m": null,
+        "walk_note": "仅直线距离"
+      },
+      {
+        "name": "人民广场地铁站3号口",
+        "type": "subway",
+        "distance_m": 261,
+        "walk_distance_m": null,
+        "walk_note": "仅直线距离"
+      }
+    ],
+    "nearest_transit_distance": 202.0,
+    "transit_nearest_m": 202.0,
+    "transit_nearest_straight_m": 202.0,
+    "transit_nearest_walk_m": 680,
+    "transit_has_walk_route": true,
+    "transit_summary_text": "最近交通：路网步行距离约 680m（直线约 202m）",
+    "rating_avg_500m": 4.02,
+    "rating_sample_count": 12,
+    "transit_data_status": "OK",
+    "validation_user_notes": [],
+    "buildings": [
+      {
+        "id": "b1",
+        "coords": [
+          [
+            121.4732,
+            31.2308
+          ],
+          [
+            121.4742,
+            31.2308
+          ],
+          [
+            121.4742,
+            31.23
+          ],
+          [
+            121.4732,
+            31.23
+          ]
+        ]
+      }
+    ],
+    "brand_positioning": "即时饮品、年轻向",
+    "area_sqm": null,
+    "rent": 5000.0,
+    "price": null,
+    "revenue": 20000.0,
+    "daily_cups": null,
+    "analytics": {
+      "chain_300": 1,
+      "independent_300": 1,
+      "chain_ratio_300": 0.5,
+      "nearest_competitor": {
+        "name": "蜜雪冰城(人民公园)",
+        "distance_m": 253,
+        "chain": true,
+        "rating": 4.2,
+        "competitor_type": "direct_tea"
+      },
+      "distance_bands_300": {
+        "0-100m": 0,
+        "100-200m": 0,
+        "200-300m": 2
+      },
+      "top_categories_500": [
+        [
+          "餐饮",
+          100
+        ],
+        [
+          "休闲娱乐",
+          100
+        ],
+        [
+          "写字楼/商务",
+          96
+        ],
+        [
+          "交通",
+          45
+        ],
+        [
+          "酒店",
+          36
+        ]
+      ],
+      "density_note": "贴身存在茶饮竞品，近场分流与同质化风险需结合价格带判断；竞争环境不宜视为「零风险」",
+      "categories_zh_300": "餐饮 44、休闲娱乐 20、交通 10、写字楼/商务 3、居住小区 2、商场/购物 1",
+      "categories_zh_500": "餐饮 100+、休闲娱乐 100+、写字楼/商务 96、交通 45、酒店 36、居住小区 35、商场/购物 11、学校 6",
+      "categories_zh_1000": "餐饮 100+、休闲娱乐 100+、写字楼/商务 100+、居住小区 100+、交通 100+、酒店 100+、商场/购物 46、学校 32",
+      "poi_total_500": null,
+      "scene_why": "判定为混合型：商业配套（餐饮 100++休闲 100++商场 11）、办公 96、居住 35、学校 6、交通 45 等并存，无单一场景绝对主导",
+      "indirect_300": 5,
+      "indirect_500": 42,
+      "indirect_coffee_300": 5
+    },
+    "finance": {
+      "has_rent": true,
+      "est_monthly_revenue": 20000.0,
+      "rent_ratio": 0.25,
+      "breakeven_cups_day": null,
+      "cups_gap": null,
+      "notes": [
+        "营收采用用户填写的预估月营收"
+      ]
+    },
+    "basemap_note": "街道底图：高德静态地图",
+    "basemap_ok": true,
+    "charts": {
+      "summary": [
+        "chart_scores.png"
+      ],
+      "district": [
+        "chart_poi_500.png"
+      ],
+      "competition": [
+        "chart_competition.png",
+        "chart_distance_bands.png"
+      ]
+    }
+  },
+  "score": {
+    "subscores": {
+      "demand": {
+        "score": 35.0,
+        "max": 35,
+        "reasons": [
+          "商场/购物 11 家 → 8/8 分",
+          "学校 6 家 → 5/7 分",
+          "写字楼/商务 96 家 → 7/7 分",
+          "居住小区 35 家 → 6/6 分",
+          "交通 45 家 → 5/5 分",
+          "餐饮 100+ 家 → 5/5 分",
+          "休闲娱乐 100+ 家 → 3/3 分"
+        ]
+      },
+      "competition": {
+        "score": 24.0,
+        "max": 30,
+        "label": "中",
+        "tea_300m": 2
+      },
+      "consumer_scene": {
+        "score": 12.0,
+        "max": 15,
+        "reasons": [
+          "500m 餐饮 100 家、休闲 100 家",
+          "最近交通直线约 202m（最近站点另有步行路径数据，见交通章节）",
+          "办公/交通枢纽主导场景：工作日平峰（如 14:00–16:00）客流可能断崖，消费场景分已作时段性保守折算"
+        ]
+      },
+      "cost": {
+        "score": 13.3,
+        "max": 20,
+        "reasons": [
+          "租金/营收占比 25.0%"
+        ]
+      }
+    },
+    "total_score": 84.3,
+    "max_possible": 100,
+    "normalized_score": 84.3,
+    "financial_checked": true,
+    "financial_unchecked_notice": null,
+    "recommendation": "推荐选址",
+    "veto_reasons": [],
+    "score_disclaimer": "综合决策分为本工具规则，非法定标准；含财务评估时需同时参考经营可行性章节。",
+    "rent_ratio": 0.25
+  },
+  "evidence": [
+    {
+      "claim_id": "E001",
+      "claim": "候选点位于 上海市 · 地图选点（经度 121.473701，纬度 31.230416）",
+      "source": "demo",
+      "detail": "坐标 {'lng': 121.473701, 'lat': 31.230416}，查询时间 2026-09-01T15:25:14+08:00",
+      "data": {
+        "lng": 121.473701,
+        "lat": 31.230416
+      }
+    },
+    {
+      "claim_id": "E002",
+      "claim": "推断场景：混合型（mixed）",
+      "source": "demo POI 500m 结构",
+      "detail": "判定为混合型：商业配套（餐饮 100++休闲 100++商场 11）、办公 96、居住 35、学校 6、交通 45 等并存，无单一场景绝对主导",
+      "data": null
+    },
+    {
+      "claim_id": "E003",
+      "claim": "300m 茶饮 2 家（连锁 1 / 非连锁 1）",
+      "source": "demo POI 300m",
+      "detail": "贴身存在茶饮竞品，近场分流与同质化风险需结合价格带判断；竞争环境不宜视为「零风险」",
+      "data": [
+        {
+          "name": "蜜雪冰城(人民公园)",
+          "distance_m": 253,
+          "chain": true,
+          "rating": 4.2,
+          "competitor_type": "direct_tea"
+        },
+        {
+          "name": "太平洋牛乳茶(人民广场店)",
+          "distance_m": 286,
+          "chain": false,
+          "rating": 3.9,
+          "competitor_type": "direct_tea"
+        }
+      ]
+    },
+    {
+      "claim_id": "E004",
+      "claim": "300m 间接饮品 5 家（咖啡约 5）",
+      "source": "demo POI 300m",
+      "detail": "间接饮品（咖啡/果汁等），不计入茶饮竞争家数",
+      "data": [
+        {
+          "name": "示例咖啡1",
+          "distance_m": 95,
+          "competitor_type": "indirect_beverage",
+          "beverage_subtype": "coffee"
+        },
+        {
+          "name": "示例咖啡2",
+          "distance_m": 128,
+          "competitor_type": "indirect_beverage",
+          "beverage_subtype": "coffee"
+        },
+        {
+          "name": "示例咖啡3",
+          "distance_m": 155,
+          "competitor_type": "indirect_beverage",
+          "beverage_subtype": "coffee"
+        },
+        {
+          "name": "示例咖啡4",
+          "distance_m": 188,
+          "competitor_type": "indirect_beverage",
+          "beverage_subtype": "coffee"
+        },
+        {
+          "name": "示例咖啡5",
+          "distance_m": 235,
+          "competitor_type": "indirect_beverage",
+          "beverage_subtype": "coffee"
+        }
+      ]
+    },
+    {
+      "claim_id": "E005",
+      "claim": "500m 茶饮 12 家；500m POI 结构：餐饮 100+、休闲娱乐 100+、写字楼/商务 96、交通 45、酒店 36、居住小区 35、商场/购物 11、学校 6",
+      "source": "demo POI 500m",
+      "detail": "多类 POI 触顶，总量不可靠",
+      "data": null
+    },
+    {
+      "claim_id": "E006",
+      "claim": "1000m 配套结构：餐饮 100+、休闲娱乐 100+、写字楼/商务 100+、居住小区 100+、交通 100+、酒店 100+、商场/购物 46、学校 32",
+      "source": "demo POI 1000m",
+      "detail": "更大范围配套对照",
+      "data": null
+    },
+    {
+      "claim_id": "E007",
+      "claim": "最近茶饮竞品 蜜雪冰城(人民公园)，约 253m",
+      "source": "竞品名单",
+      "detail": "chain=True",
+      "data": null
+    },
+    {
+      "claim_id": "E008",
+      "claim": "500m 茶饮官方 rating 均值 4.02（n=12）",
+      "source": "高德 extensions=all rating 字段",
+      "detail": "有则使用，无则不编造",
+      "data": null
+    },
+    {
+      "claim_id": "E009",
+      "claim": "最近交通：路网步行距离约 680m（直线约 202m）",
+      "source": "POI 直线/步行距离",
+      "detail": "nearest_transit_distance=202.0m; [{'name': '人民广场地铁站', 'type': 'subway', 'distance_m': 202, 'walk_distance_m': 680, 'walk_note': '步行路径规划成功'}, {'name': '人民广场(地铁站)', 'type': 'subway', 'distance_m': 216, 'walk_distance_m': None, 'walk_note': '仅直线距离'}, {'name': '上海城市规划展示馆(地铁站)', 'type': 'subway', 'distance_m': 216, 'walk_distance_m': None, 'walk_note': '仅直线距离'}, {'name': '人民广场地铁站2号口', 'type': 'subway', 'distance_m': 221, 'walk_distance_m': None, 'walk_note': '仅直线距离'}, {'name': '人民广场地铁站3号口', 'type': 'subway', 'distance_m': 261, 'walk_distance_m': None, 'walk_note': '仅直线距离'}]",
+      "data": null
+    },
+    {
+      "claim_id": "E010",
+      "claim": "租金/营收约 25.0%",
+      "source": "用户经营输入 + 公式",
+      "detail": "营收采用用户填写的预估月营收",
+      "data": null
+    },
+    {
+      "claim_id": "E011",
+      "claim": "综合决策分 84.3/100（点位评分 + 财务评估）；最终建议「推荐选址」（来源：程序计分）",
+      "source": "程序计分 scoring.yaml",
+      "detail": "分项 {'demand': {'score': 35.0, 'max': 35, 'reasons': ['商场/购物 11 家 → 8/8 分', '学校 6 家 → 5/7 分', '写字楼/商务 96 家 → 7/7 分', '居住小区 35 家 → 6/6 分', '交通 45 家 → 5/5 分', '餐饮 100+ 家 → 5/5 分', '休闲娱乐 100+ 家 → 3/3 分']}, 'competition': {'score': 24.0, 'max': 30, 'label': '中', 'tea_300m': 2}, 'consumer_scene': {'score': 12.0, 'max': 15, 'reasons': ['500m 餐饮 100 家、休闲 100 家', '最近交通直线约 202m（最近站点另有步行路径数据，见交通章节）', '办公/交通枢纽主导场景：工作日平峰（如 14:00–16:00）客流可能断崖，消费场景分已作时段性保守折算']}, 'cost': {'score': 13.3, 'max': 20, 'reasons': ['租金/营收占比 25.0%']}}",
+      "data": null
+    }
+  ],
+  "report": {
+    "chapters": {
+      "summary": {
+        "title": "决策摘要",
+        "content": "**【演示点报告】** 本报告基于内置演示数据生成，用于产品功能展示与体验，不代表对真实候选地址的分析结论。\n\n**Recommendation：推荐选址**\n\n**Decision implication：** 当前可进入下一步谈判与实地验证：仍需完成蹲点、门头可见性与租约条款核对，不宜仅凭地图分数签约。\n\n综合决策分：84.3/100（点位评分 + 财务评估）\n评分反映位置、需求、竞争等点位维度；财务评估单独成章；最终建议受独立否决规则约束。\n点位速写：上海市 · 地图选点（经度 121.473701，纬度 31.230416） · 混合型 · 300m 茶饮 2 家 · 500m 茶饮 12 家\n\n### 核心原因\n- 需求匹配较强（35.0/35）：判定为混合型：商业配套（餐饮 100++休闲 100++商场 11）、办公 96、居住 35、学校 6、交通 45 等并存，无单一场景绝对主导\n- 竞争压力：低（24.0/30）：300m 茶饮 2 家，连锁 1 家；贴身存在茶饮竞品，近场分流与同质化风险需结合价格带判断；竞争环境不宜视为「零风险」\n- 消费场景 12.0/15：餐饮/休闲配套见 500m 结构；最近交通：路网步行距离约 680m（直线约 202m）\n- 财务评估 13.3/20：租金/营收约 25%\n- 品牌定位对照：「即时饮品、年轻向」— 需与周边竞品价格带/客群是否同档一并现场核实\n\n### 主要优势\n- 需求匹配突出（35.0/35）：判定为混合型：商业配套（餐饮 100++休闲 100++商场 11）、办公 96、居住 35、学校 6、交通 45 等并存，无单一场景绝对主导\n- 竞争相对温和：300m 茶饮仅 2 家\n- 消费场景较好：餐饮休闲配套与顺路购买条件较优\n\n### 主要风险\n- 未发现重大显性点位风险；仍建议现场核对门头可见性、楼层/动线、租约条款等。\n\n### 提示\n- 当前为演示数据，非实时周边\n\n### 财务阈值参考\n- 按租金占营收 ≤30% 的谨慎线，月租 5,000 元时月营收需不低于约 16,667 元；此为压力阈值示意，非盈利预测。\n\n### 建议（可执行）\n- 按工作日+周末覆盖午晚高峰，做三日蹲点：记录经过/进店/成交，区分有效人流与过路\n- 现场核对门头可见性、是否被遮挡、是否顺路；商场点优先核中庭/扶梯口，社区点核出入口 50m 内\n- 若继续谈租：用房东报价回填月租与客单价，重跑本工具看财务评估是否翻盘\n- 重点对标最近竞品「蜜雪冰城(人民公园)」（约 253m）：价格带、出品与排队时段\n\n综合决策分为本工具规则，非法定标准；含财务评估时需同时参考经营可行性章节。",
+        "evidence_ids": [
+          "E001",
+          "E002",
+          "E003",
+          "E004",
+          "E005",
+          "E006",
+          "E007",
+          "E008"
+        ],
+        "rag_refs": [
+          "02_商场型选铺.md",
+          "01_选址核心指标.md",
+          "07_三日蹲点.md"
+        ]
+      },
+      "district": {
+        "title": "商圈与场景",
+        "content": "### What we see（数据事实）\n场景判定 **混合型**：判定为混合型：商业配套（餐饮 100++休闲 100++商场 11）、办公 96、居住 35、学校 6、交通 45 等并存，无单一场景绝对主导\n- 300m：餐饮 44、休闲娱乐 20、交通 10、写字楼/商务 3、居住小区 2、商场/购物 1\n- 500m 内多个 POI 类别达到接口返回上限，无法可靠统计总量；以下采用分类结构进行判断。\n- 1000m：餐饮 100+、休闲娱乐 100+、写字楼/商务 100+、居住小区 100+、交通 100+、酒店 100+、商场/购物 46、学校 32\n\n### What it means（商业含义）\n多场景并存，须分清主力时段与客群。\n\n### Decision implication（决策含义）\n开奶茶前须现场确认：是否顺路、是否死角/高层冷区、是否与主力客群动线重合；POI 只说明周边有什么，不等于门口有效人流。\n\n### 500m 结构明细\n- 商场/购物：11\n- 餐饮：100+\n- 休闲娱乐：100+\n- 学校：6\n- 写字楼/商务：96\n- 居住小区：35\n- 交通：45\n- 酒店：36\n\n### 局限\n- POI 不直接等于进店率；楼层与门头须实地核。\n- 部分 POI 类别因接口分页上限，计数达到 100 时显示为 100+，以实地调研为准。\n- 数据来源：demo，查询时间 2026-09-01T15:25:14+08:00。\n\n<p class=\"kb-ref\">本段参考知识库：02_商场型选铺.md、03_社区型选铺.md、04_交通办公场景.md</p>",
+        "evidence_ids": [
+          "E001",
+          "E002",
+          "E005",
+          "E006"
+        ],
+        "rag_refs": [
+          "02_商场型选铺.md",
+          "03_社区型选铺.md",
+          "04_交通办公场景.md"
+        ],
+        "headline": "点位以混合型为主，500m 配套结构已成型"
+      },
+      "demand": {
+        "title": "消费者与需求匹配",
+        "content": "### What we see（数据事实）\n人群分析为 **POI 场景代理**（非年龄/收入画像、非客流预测）。\n**35.0/35 分**（约满分 100%）表示需求匹配**较强**：500m 内商场、办公、餐饮等配套数量达到较高档，「顺路买一杯」相对成立；仍须核实店门口动线与有效人流。判定为商场型不会自动给满分。\n计分按 500m 配套**数量分档**，场景判定（如商场型）本身不加分。\n品牌定位：**即时饮品、年轻向**。\n500m 茶饮官方 rating 均值 **4.02**（n=12）\n- 说明：仅统计 500m 内有返回 rating 字段的茶饮 POI 样本均值，不代表全市场口碑或客流。\n\n### What it means（商业含义）\n混合型：500m 内 办公 96、居住 35、商业 11 等并存；人流更偏「通勤白领 + 周末文娱/旅游」双高峰，工作日平峰（14:00–16:00）可能冷清，不宜按全天候逛街客流假设排班。\n\n### Decision implication（决策含义）\n分数高只说明配套结构更支持「顺路买一杯」，仍须三日蹲点验证店门口有效人流；分数低时即使竞品少，也可能是需求不足。\n\n### 500m POI 结构\n- 商场/购物：11\n- 餐饮：100+\n- 休闲娱乐：100+\n- 学校：6\n- 写字楼/商务：96\n- 居住小区：35\n- 交通：45\n- 酒店：36\n\n### 需求匹配分档明细\n- 商场/购物 11 家 → 8/8 分\n- 学校 6 家 → 5/7 分\n- 写字楼/商务 96 家 → 7/7 分\n- 居住小区 35 家 → 6/6 分\n- 交通 45 家 → 5/5 分\n- 餐饮 100+ 家 → 5/5 分\n- 休闲娱乐 100+ 家 → 3/3 分\n\n### 局限\n- 未接入评价全文；rating 仅官方字段有则用。\n\n<p class=\"kb-ref\">本段参考知识库：03_社区型选铺.md、04_交通办公场景.md、01_选址核心指标.md</p>",
+        "evidence_ids": [
+          "E002",
+          "E008"
+        ],
+        "rag_refs": [
+          "03_社区型选铺.md",
+          "04_交通办公场景.md",
+          "01_选址核心指标.md"
+        ],
+        "headline": "需求匹配依赖混合型，非客流普查"
+      },
+      "competition": {
+        "title": "竞争分析",
+        "content": "### What we see（数据事实）\n竞争环境分 **24.0/30**（竞争压力：低（24.0/30））。\n300m 直接茶饮 2 家（500m 12 家对照）；0–100m 0 家、100–200m 0 家、200–300m 2 家；连锁 1 家、非连锁 1 家。\n间接饮品（咖啡/果汁）300m **5** 家（其中咖啡约 5 家），500m **42** 家。\n间接饮品 POI 已达接口返回上限（单类最多约 100 条），500m 数量可能被低估；若 300m 与 500m 计数接近，应优先以实地调研为准。\n\n### What it means（商业含义）\n贴身已有茶饮竞品，存在近场分流与同质化风险；竞争环境分不会按「零竞品」给满分，需结合价格带与动线判断。\n\n### Decision implication（决策含义）\n对照品牌定位「即时饮品、年轻向」判断是补位还是同质化；建议对标最近 3 家竞品菜单与客群。\n\n### 竞争数量对照表\n| 类型 | 300m | 500m | 说明 |\n| --- | --- | --- | --- |\n| 直接茶饮 | 2 | 12 | 计入竞争计分 |\n| 间接饮品（咖啡/果汁等） | 5 | 42 | 单独统计，不计入茶饮家数 |\n\n### 直接茶饮清单（300m，直线距离）\n| 店名 | 直线距离 | 连锁 | rating |\n| --- | --- | --- | --- |\n| 蜜雪冰城(人民公园) | 253m | 是 | 4.2 |\n| 太平洋牛乳茶(人民广场店) | 286m | 否 | 3.9 |\n\n### 间接饮品清单（300m）\n| 店名 | 直线距离 | 类型 |\n| --- | --- | --- |\n| 示例咖啡1 | 95m | 咖啡 |\n| 示例咖啡2 | 128m | 咖啡 |\n| 示例咖啡3 | 155m | 咖啡 |\n| 示例咖啡4 | 188m | 咖啡 |\n| 示例咖啡5 | 235m | 咖啡 |\n\n### 局限\n- POI 可能有滞后；连锁识别依赖公开名单。\n- 禁止编造排队、营业额。\n\n<p class=\"kb-ref\">本段参考知识库：06_竞争分析.md、09_连锁名单.md</p>",
+        "evidence_ids": [
+          "E003",
+          "E005",
+          "E007",
+          "E008"
+        ],
+        "rag_refs": [
+          "06_竞争分析.md",
+          "09_连锁名单.md"
+        ],
+        "headline": "竞争环境可控，重点核对同档扎堆与价格带"
+      },
+      "transit": {
+        "title": "交通与可达性",
+        "content": "### What we see（数据事实）\n消费场景分 **12.0/15**；\n最近交通：路网步行距离约 680m（直线约 202m）。\n- **最近交通直线距离**：202m（全量交通 POI 最小值）\n- **人民广场地铁站**：直线 202m，路网步行约 680m\n- **人民广场(地铁站)**：直线 216m（仅直线距离）\n- **上海城市规划展示馆(地铁站)**：直线 216m（仅直线距离）\n- **人民广场地铁站2号口**：直线 221m（仅直线距离）\n- **人民广场地铁站3号口**：直线 261m（仅直线距离）\n\n### What it means（商业含义）\n近地铁/公交有利于通勤外带，但不等于店门口有效停留；枢纽型点位常见「人多不进店」。半径圆为查询半径，非步行等时圈。\n\n### Decision implication（决策含义）\n交通是加分项而非充分条件；须现场确认从站点到铺位是否顺路、有无遮挡。\n\n### 局限\n- 路径规划失败时已降级为直线距离并注明。\n\n<p class=\"kb-ref\">本段参考知识库：04_交通办公场景.md</p>",
+        "evidence_ids": [
+          "E005",
+          "E006",
+          "E009"
+        ],
+        "rag_refs": [
+          "04_交通办公场景.md"
+        ],
+        "headline": "交通站点较近，外带场景相对有利"
+      },
+      "finance": {
+        "title": "经营可行性",
+        "content": "### What we see（数据事实）\n财务评估分 **13.3/20**；租金/营收约 **25.0%**。\n- 月租 5000.0；估算月营收 20000.0\n\n### What it means（商业含义）\n本页为条件敏感性测算，不是营业额预测；占比偏高时应优先压租或提高营收假设。\n\n### Decision implication（决策含义）\n若 Conservative 情景仍偏高，不建议签约；Better 情景仅说明改善方向，不作承诺。\n\n### 情景分析（条件敏感性，非预测）\n| 情景 | 月租 | 月营收 | 租金/营收 | 经营压力 | 建议 |\n| --- | --- | --- | --- | --- | --- |\n| Conservative（营收 -15%） | 5000.0 | 17000.0 | 29.4% | 中 | 谨慎 |\n| Base（当前输入） | 5000.0 | 20000.0 | 25.0% | 中 | 谨慎 |\n| Better（租金 -10% 且营收 +10%） | 4500.0 | 22000.0 | 20.5% | 低 | 可继续评估 |\n- 口径：Conservative 营收×0.85；Better 租金×0.9 且营收×1.1；仅作压力对比。\n\n### 决策阈值参考\n- 按租金占营收 ≤30% 的谨慎线，月租 5,000 元时月营收需不低于约 16,667 元；此为压力阈值示意，非盈利预测。\n\n### 局限\n- 未建模全成本；转让费、递增须看合同。\n\n<p class=\"kb-ref\">本段参考知识库：05_财务检查清单.md、10_租约风险.md</p>",
+        "evidence_ids": [
+          "E010",
+          "E011"
+        ],
+        "rag_refs": [
+          "05_财务检查清单.md",
+          "10_租约风险.md"
+        ],
+        "headline": "经营压力可测算，仍需补全全成本"
+      },
+      "risk": {
+        "title": "风险因素",
+        "content": "### 1. 主要风险（经营与选址）\n1. 未发现重大显性点位风险；仍建议现场核对门头可见性、楼层/动线、租约条款等。\n\n### 2. 提示（数据缺失与未核项）\n1. 当前为演示数据，非实时周边\n\n### 3. 必须现场确认（不进综合分）\n- 门头 15–20m 外是否可见，是否被树/柱/广告牌遮挡\n- 人流动线是否顺路，是否需要绕行\n- 商场：是否中庭/扶梯口/美食区，是否电梯死角或高层冷区\n- 社区：是否主出入口约 50m 内、菜场或多小区交汇\n- 物业：电容量、上下水、外摆与招牌限制\n\n### 4. 局限\n- 政策新闻未自动计分；若你有政策备注请自行写入决策附件。\n\n<p class=\"kb-ref\">本段参考知识库：05_财务检查清单.md、07_三日蹲点.md、10_租约风险.md</p>",
+        "evidence_ids": [
+          "E001",
+          "E002",
+          "E003",
+          "E004",
+          "E005",
+          "E006",
+          "E007",
+          "E008"
+        ],
+        "rag_refs": [
+          "05_财务检查清单.md",
+          "07_三日蹲点.md",
+          "10_租约风险.md"
+        ],
+        "headline": "风险与数据边界（含未核项）"
+      },
+      "conclusion": {
+        "title": "结论与建议",
+        "content": "### 1. 结论\n综合决策分 **84.3/100**，最终建议 **推荐选址**。\n\n综合决策分 84.3/100（点位评分 + 财务评估）；最终建议「推荐选址」（来源：程序计分）\n\n当前可进入下一步谈判与实地验证：仍需完成蹲点、门头可见性与租约条款核对，不宜仅凭地图分数签约。\n\n该建议由程序规则与否决条件给出，不是模型另打分。\n\n### 2. 为什么是这个档\n- 需求匹配较强（35.0/35）：判定为混合型：商业配套（餐饮 100++休闲 100++商场 11）、办公 96、居住 35、学校 6、交通 45 等并存，无单一场景绝对主导\n- 竞争压力：低（24.0/30）：300m 茶饮 2 家，连锁 1 家；贴身存在茶饮竞品，近场分流与同质化风险需结合价格带判断；竞争环境不宜视为「零风险」\n- 消费场景 12.0/15：餐饮/休闲配套见 500m 结构；最近交通：路网步行距离约 680m（直线约 202m）\n- 财务评估 13.3/20：租金/营收约 25%\n\n### 3. 财务阈值参考\n- 按租金占营收 ≤30% 的谨慎线，月租 5,000 元时月营收需不低于约 16,667 元；此为压力阈值示意，非盈利预测。\n\n### 4. 下一步行动清单\n4.1. **三日蹲点**：覆盖工作日+周末；时段建议 11:30–13:30、17:30–19:30、20:30–22:00；每 15 分钟记经过/进店/成交\n4.2. **竞品对标**：对 300m 内最近 3 家记录价格带、招牌品、堂食/外带比例\n4.3. **财务回填**：拿到月租意向后，连同客单价/预估杯量重跑本报告，看成本项是否改变建议档\n4.4. **租约**：关注递增方式、转让费、租期是否足以摊销装修\n\n### 5. 局限声明\n- 本工具是初筛助手，不能替代现场调研与签约前尽职调查。\n\n<p class=\"kb-ref\">本段参考知识库：02_商场型选铺.md、01_选址核心指标.md、07_三日蹲点.md</p>",
+        "evidence_ids": [
+          "E001",
+          "E002",
+          "E003",
+          "E004",
+          "E005",
+          "E006",
+          "E007",
+          "E008"
+        ],
+        "rag_refs": [
+          "02_商场型选铺.md",
+          "01_选址核心指标.md",
+          "07_三日蹲点.md"
+        ],
+        "headline": "结论：推荐选址及下一步"
+      },
+      "map": {
+        "title": "选址分析图",
+        "content": "**图层说明：** 候选点、300m/500m/1000m 查询半径圆（非路网等时圈）、直接茶饮（红/深蓝圆点）、间接饮品（咖啡/果汁等，橙色三角）、交通站点（绿色方块）。\n街道底图：高德静态地图",
+        "evidence_ids": [
+          "E001",
+          "E002",
+          "E003",
+          "E004",
+          "E005",
+          "E006",
+          "E007",
+          "E008"
+        ],
+        "rag_refs": []
+      },
+      "appendix": {
+        "title": "数据说明与来源附录",
+        "content": "- **报告类型：** 演示点报告（内置脱敏数据，非真实点位分析）\n- **位置与竞争：** 数据模式：演示数据\n- **街道底图：** 高德静态地图\n- **选址分析图：** 高德栅格底图叠加分析图层；提供 PNG 与 SVG 下载\n- **租金、面积、客单价、品牌定位、预估营收/杯量：** 用户提供；未提供则财务结论降级\n- **客流：** 未实地计数；不以公开信息冒充客流预测；人群为 POI 场景代理\n- **评分数字：** 仅当官方字段返回时使用；评价全文未接入\n- **选址方法、租金经验安全线、调研口径：** 本地知识库\n- **综合决策分为本工具规则，非法定标准；含财务评估时需同时参考经营可行性章节。**\n- **建议**结合现场调研（动线、楼层、可见性、三日人流）再决策\n\n### 计分口径摘要\n\n- 需求匹配 35 + 竞争环境 30 + 消费场景 15 + 财务评估 20（需经营输入）\n- 300m 茶饮 ≥9 家：建议档最高「谨慎选址」\n- 已填财务且租金/营收 >30%：不推荐\n- 未填租金：输出点位评分（未含财务评估），须结合财务回填再决策\n",
+        "evidence_ids": [
+          "E001",
+          "E002",
+          "E003",
+          "E004",
+          "E005",
+          "E006",
+          "E007",
+          "E008"
+        ],
+        "rag_refs": [
+          "08_半径习惯.md",
+          "11_报告结构.md"
+        ]
+      }
+    },
+    "chapter_order": [
+      {
+        "key": "summary",
+        "title": "决策摘要"
+      },
+      {
+        "key": "district",
+        "title": "商圈与场景"
+      },
+      {
+        "key": "demand",
+        "title": "消费者与需求匹配"
+      },
+      {
+        "key": "competition",
+        "title": "竞争分析"
+      },
+      {
+        "key": "transit",
+        "title": "交通与可达性"
+      },
+      {
+        "key": "finance",
+        "title": "经营可行性"
+      },
+      {
+        "key": "risk",
+        "title": "风险因素"
+      },
+      {
+        "key": "conclusion",
+        "title": "结论与建议"
+      },
+      {
+        "key": "map",
+        "title": "选址分析图"
+      },
+      {
+        "key": "appendix",
+        "title": "数据说明与来源附录"
+      }
+    ],
+    "rag_hits": {
+      "summary": [
+        {
+          "filename": "02_商场型选铺.md",
+          "title": "商场型选铺原则",
+          "chapter": [
+            "district",
+            "conclusion"
+          ],
+          "scene": [
+            "mall",
+            "mixed"
+          ],
+          "source": "公开商业选址资料归纳",
+          "body": "商场型点位优先关注：动线节点、可见性、餐饮聚集层、是否与同类茶饮过度扎堆。原则性要求靠近消费动线，但具体铺位是否达标须实地看，不能用 POI 代替「在扶梯口」等断言。"
+        },
+        {
+          "filename": "01_选址核心指标.md",
+          "title": "奶茶选址核心指标",
+          "chapter": [
+            "district",
+            "demand",
+            "conclusion"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开选址方法论归纳",
+          "body": "奶茶门店选址应同时观察需求、竞争、可达性与成本四类信号。300m 看贴身竞品密度，500m 看日常消费场景结构，1000m 看更大范围配套。POI 结构可代理「会不会有人买」，但不能替代实地数人流。"
+        },
+        {
+          "filename": "07_三日蹲点.md",
+          "title": "三日蹲点与有效人流",
+          "chapter": [
+            "conclusion",
+            "risk"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开市调方法归纳",
+          "body": "有效人流不等于过路人流。建议至少三个典型日、分时段记录进店与提袋。动线、楼层、门头遮挡、商场死角等现场因素不进综合分，但必须在结论章提示实地验证。"
+        }
+      ],
+      "district": [
+        {
+          "filename": "02_商场型选铺.md",
+          "title": "商场型选铺原则",
+          "chapter": [
+            "district",
+            "conclusion"
+          ],
+          "scene": [
+            "mall",
+            "mixed"
+          ],
+          "source": "公开商业选址资料归纳",
+          "body": "商场型点位优先关注：动线节点、可见性、餐饮聚集层、是否与同类茶饮过度扎堆。原则性要求靠近消费动线，但具体铺位是否达标须实地看，不能用 POI 代替「在扶梯口」等断言。"
+        },
+        {
+          "filename": "03_社区型选铺.md",
+          "title": "社区型选铺原则",
+          "chapter": [
+            "district",
+            "demand"
+          ],
+          "scene": [
+            "community",
+            "mixed"
+          ],
+          "source": "公开社区商业资料归纳",
+          "body": "社区型茶饮依赖复购与顺路购买，需观察社区规模、底商餐饮氛围与通勤补点需求。POI 稀疏时需求匹配应保守，避免把「竞争少」误判为「机会大」。"
+        },
+        {
+          "filename": "04_交通办公场景.md",
+          "title": "交通型与办公型场景",
+          "chapter": [
+            "district",
+            "transit",
+            "demand"
+          ],
+          "scene": [
+            "office",
+            "transit",
+            "mixed"
+          ],
+          "source": "公开资料归纳",
+          "body": "办公与交通型场景关注通勤时段、站点步行距离与顺路性。地铁/公交 500m 内通常更易形成即时购买，但路径规划失败时只能用直线距离并注明口径。"
+        }
+      ],
+      "demand": [
+        {
+          "filename": "03_社区型选铺.md",
+          "title": "社区型选铺原则",
+          "chapter": [
+            "district",
+            "demand"
+          ],
+          "scene": [
+            "community",
+            "mixed"
+          ],
+          "source": "公开社区商业资料归纳",
+          "body": "社区型茶饮依赖复购与顺路购买，需观察社区规模、底商餐饮氛围与通勤补点需求。POI 稀疏时需求匹配应保守，避免把「竞争少」误判为「机会大」。"
+        },
+        {
+          "filename": "04_交通办公场景.md",
+          "title": "交通型与办公型场景",
+          "chapter": [
+            "district",
+            "transit",
+            "demand"
+          ],
+          "scene": [
+            "office",
+            "transit",
+            "mixed"
+          ],
+          "source": "公开资料归纳",
+          "body": "办公与交通型场景关注通勤时段、站点步行距离与顺路性。地铁/公交 500m 内通常更易形成即时购买，但路径规划失败时只能用直线距离并注明口径。"
+        },
+        {
+          "filename": "01_选址核心指标.md",
+          "title": "奶茶选址核心指标",
+          "chapter": [
+            "district",
+            "demand",
+            "conclusion"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开选址方法论归纳",
+          "body": "奶茶门店选址应同时观察需求、竞争、可达性与成本四类信号。300m 看贴身竞品密度，500m 看日常消费场景结构，1000m 看更大范围配套。POI 结构可代理「会不会有人买」，但不能替代实地数人流。"
+        }
+      ],
+      "competition": [
+        {
+          "filename": "06_竞争分析.md",
+          "title": "竞争分析思路",
+          "chapter": [
+            "competition"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开竞品分析框架归纳",
+          "body": "300m 茶饮家数是竞争计分主指标。需区分连锁与同档扎堆，也看是否存在错位空间。不得编造排队、营业额或评价观点；官方 rating 有则统计，无则说明未返回。"
+        },
+        {
+          "filename": "09_连锁名单.md",
+          "title": "常见茶饮连锁识别",
+          "chapter": [
+            "competition"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开品牌名录整理",
+          "body": "常见连锁品牌包括喜茶、奈雪的茶、茶百道、古茗、蜜雪冰城、CoCo都可、一点点、沪上阿姨、书亦烧仙草等。识别仅基于店名 POI，不代表实际经营状态或排队情况。"
+        }
+      ],
+      "transit": [
+        {
+          "filename": "04_交通办公场景.md",
+          "title": "交通型与办公型场景",
+          "chapter": [
+            "district",
+            "transit",
+            "demand"
+          ],
+          "scene": [
+            "office",
+            "transit",
+            "mixed"
+          ],
+          "source": "公开资料归纳",
+          "body": "办公与交通型场景关注通勤时段、站点步行距离与顺路性。地铁/公交 500m 内通常更易形成即时购买，但路径规划失败时只能用直线距离并注明口径。"
+        }
+      ],
+      "finance": [
+        {
+          "filename": "05_财务检查清单.md",
+          "title": "财务检查与租金经验线",
+          "chapter": [
+            "finance",
+            "risk"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开餐饮财务口径归纳（非国标）",
+          "body": "常见经验线：月租金占月营收不宜长期超过 30%（经验口径，非法定标准）。保本杯量需结合客单价、毛利与固定成本；用户未提供租金或营收时，不得估算月营业额或回本周期。"
+        },
+        {
+          "filename": "10_租约风险.md",
+          "title": "租约与转让费风险",
+          "chapter": [
+            "risk",
+            "finance"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开租约风险提示归纳",
+          "body": "需关注租期、递增条款、转让费、排他条款与退场成本。此类风险不进入综合分，但应在风险章列出。无用户输入时不做具体金额推断。"
+        }
+      ],
+      "risk": [
+        {
+          "filename": "05_财务检查清单.md",
+          "title": "财务检查与租金经验线",
+          "chapter": [
+            "finance",
+            "risk"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开餐饮财务口径归纳（非国标）",
+          "body": "常见经验线：月租金占月营收不宜长期超过 30%（经验口径，非法定标准）。保本杯量需结合客单价、毛利与固定成本；用户未提供租金或营收时，不得估算月营业额或回本周期。"
+        },
+        {
+          "filename": "07_三日蹲点.md",
+          "title": "三日蹲点与有效人流",
+          "chapter": [
+            "conclusion",
+            "risk"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开市调方法归纳",
+          "body": "有效人流不等于过路人流。建议至少三个典型日、分时段记录进店与提袋。动线、楼层、门头遮挡、商场死角等现场因素不进综合分，但必须在结论章提示实地验证。"
+        },
+        {
+          "filename": "10_租约风险.md",
+          "title": "租约与转让费风险",
+          "chapter": [
+            "risk",
+            "finance"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开租约风险提示归纳",
+          "body": "需关注租期、递增条款、转让费、排他条款与退场成本。此类风险不进入综合分，但应在风险章列出。无用户输入时不做具体金额推断。"
+        }
+      ],
+      "conclusion": [
+        {
+          "filename": "02_商场型选铺.md",
+          "title": "商场型选铺原则",
+          "chapter": [
+            "district",
+            "conclusion"
+          ],
+          "scene": [
+            "mall",
+            "mixed"
+          ],
+          "source": "公开商业选址资料归纳",
+          "body": "商场型点位优先关注：动线节点、可见性、餐饮聚集层、是否与同类茶饮过度扎堆。原则性要求靠近消费动线，但具体铺位是否达标须实地看，不能用 POI 代替「在扶梯口」等断言。"
+        },
+        {
+          "filename": "01_选址核心指标.md",
+          "title": "奶茶选址核心指标",
+          "chapter": [
+            "district",
+            "demand",
+            "conclusion"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开选址方法论归纳",
+          "body": "奶茶门店选址应同时观察需求、竞争、可达性与成本四类信号。300m 看贴身竞品密度，500m 看日常消费场景结构，1000m 看更大范围配套。POI 结构可代理「会不会有人买」，但不能替代实地数人流。"
+        },
+        {
+          "filename": "07_三日蹲点.md",
+          "title": "三日蹲点与有效人流",
+          "chapter": [
+            "conclusion",
+            "risk"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开市调方法归纳",
+          "body": "有效人流不等于过路人流。建议至少三个典型日、分时段记录进店与提袋。动线、楼层、门头遮挡、商场死角等现场因素不进综合分，但必须在结论章提示实地验证。"
+        }
+      ],
+      "map": [],
+      "appendix": [
+        {
+          "filename": "08_半径习惯.md",
+          "title": "半径 300-500-1000m 的习惯",
+          "chapter": [
+            "appendix",
+            "district"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "公开选址半径习惯说明",
+          "body": "300m 反映即时竞争与贴身配套；500m 是日常步行消费圈的主叙述半径；1000m 用于更大范围交通与目的地配套。分析图上的圆是查询半径，不是路网等时圈。"
+        },
+        {
+          "filename": "11_报告结构.md",
+          "title": "报告章节结构",
+          "chapter": [
+            "appendix",
+            "summary"
+          ],
+          "scene": [
+            "all"
+          ],
+          "source": "PRD V1.3",
+          "body": "完整报告含决策摘要、商圈与场景、消费者与需求匹配、竞争分析、交通与可达性、经营可行性、风险因素、结论与建议、选址分析图、数据说明与来源附录共十章。"
+        }
+      ]
+    },
+    "evidence": [
+      {
+        "claim_id": "E001",
+        "claim": "候选点位于 上海市 · 地图选点（经度 121.473701，纬度 31.230416）",
+        "source": "demo",
+        "detail": "坐标 {'lng': 121.473701, 'lat': 31.230416}，查询时间 2026-09-01T15:25:14+08:00",
+        "data": {
+          "lng": 121.473701,
+          "lat": 31.230416
+        }
+      },
+      {
+        "claim_id": "E002",
+        "claim": "推断场景：混合型（mixed）",
+        "source": "demo POI 500m 结构",
+        "detail": "判定为混合型：商业配套（餐饮 100++休闲 100++商场 11）、办公 96、居住 35、学校 6、交通 45 等并存，无单一场景绝对主导",
+        "data": null
+      },
+      {
+        "claim_id": "E003",
+        "claim": "300m 茶饮 2 家（连锁 1 / 非连锁 1）",
+        "source": "demo POI 300m",
+        "detail": "贴身存在茶饮竞品，近场分流与同质化风险需结合价格带判断；竞争环境不宜视为「零风险」",
+        "data": [
+          {
+            "name": "蜜雪冰城(人民公园)",
+            "distance_m": 253,
+            "chain": true,
+            "rating": 4.2,
+            "competitor_type": "direct_tea"
+          },
+          {
+            "name": "太平洋牛乳茶(人民广场店)",
+            "distance_m": 286,
+            "chain": false,
+            "rating": 3.9,
+            "competitor_type": "direct_tea"
+          }
+        ]
+      },
+      {
+        "claim_id": "E004",
+        "claim": "300m 间接饮品 5 家（咖啡约 5）",
+        "source": "demo POI 300m",
+        "detail": "间接饮品（咖啡/果汁等），不计入茶饮竞争家数",
+        "data": [
+          {
+            "name": "示例咖啡1",
+            "distance_m": 95,
+            "competitor_type": "indirect_beverage",
+            "beverage_subtype": "coffee"
+          },
+          {
+            "name": "示例咖啡2",
+            "distance_m": 128,
+            "competitor_type": "indirect_beverage",
+            "beverage_subtype": "coffee"
+          },
+          {
+            "name": "示例咖啡3",
+            "distance_m": 155,
+            "competitor_type": "indirect_beverage",
+            "beverage_subtype": "coffee"
+          },
+          {
+            "name": "示例咖啡4",
+            "distance_m": 188,
+            "competitor_type": "indirect_beverage",
+            "beverage_subtype": "coffee"
+          },
+          {
+            "name": "示例咖啡5",
+            "distance_m": 235,
+            "competitor_type": "indirect_beverage",
+            "beverage_subtype": "coffee"
+          }
+        ]
+      },
+      {
+        "claim_id": "E005",
+        "claim": "500m 茶饮 12 家；500m POI 结构：餐饮 100+、休闲娱乐 100+、写字楼/商务 96、交通 45、酒店 36、居住小区 35、商场/购物 11、学校 6",
+        "source": "demo POI 500m",
+        "detail": "多类 POI 触顶，总量不可靠",
+        "data": null
+      },
+      {
+        "claim_id": "E006",
+        "claim": "1000m 配套结构：餐饮 100+、休闲娱乐 100+、写字楼/商务 100+、居住小区 100+、交通 100+、酒店 100+、商场/购物 46、学校 32",
+        "source": "demo POI 1000m",
+        "detail": "更大范围配套对照",
+        "data": null
+      },
+      {
+        "claim_id": "E007",
+        "claim": "最近茶饮竞品 蜜雪冰城(人民公园)，约 253m",
+        "source": "竞品名单",
+        "detail": "chain=True",
+        "data": null
+      },
+      {
+        "claim_id": "E008",
+        "claim": "500m 茶饮官方 rating 均值 4.02（n=12）",
+        "source": "高德 extensions=all rating 字段",
+        "detail": "有则使用，无则不编造",
+        "data": null
+      },
+      {
+        "claim_id": "E009",
+        "claim": "最近交通：路网步行距离约 680m（直线约 202m）",
+        "source": "POI 直线/步行距离",
+        "detail": "nearest_transit_distance=202.0m; [{'name': '人民广场地铁站', 'type': 'subway', 'distance_m': 202, 'walk_distance_m': 680, 'walk_note': '步行路径规划成功'}, {'name': '人民广场(地铁站)', 'type': 'subway', 'distance_m': 216, 'walk_distance_m': None, 'walk_note': '仅直线距离'}, {'name': '上海城市规划展示馆(地铁站)', 'type': 'subway', 'distance_m': 216, 'walk_distance_m': None, 'walk_note': '仅直线距离'}, {'name': '人民广场地铁站2号口', 'type': 'subway', 'distance_m': 221, 'walk_distance_m': None, 'walk_note': '仅直线距离'}, {'name': '人民广场地铁站3号口', 'type': 'subway', 'distance_m': 261, 'walk_distance_m': None, 'walk_note': '仅直线距离'}]",
+        "data": null
+      },
+      {
+        "claim_id": "E010",
+        "claim": "租金/营收约 25.0%",
+        "source": "用户经营输入 + 公式",
+        "detail": "营收采用用户填写的预估月营收",
+        "data": null
+      },
+      {
+        "claim_id": "E011",
+        "claim": "综合决策分 84.3/100（点位评分 + 财务评估）；最终建议「推荐选址」（来源：程序计分）",
+        "source": "程序计分 scoring.yaml",
+        "detail": "分项 {'demand': {'score': 35.0, 'max': 35, 'reasons': ['商场/购物 11 家 → 8/8 分', '学校 6 家 → 5/7 分', '写字楼/商务 96 家 → 7/7 分', '居住小区 35 家 → 6/6 分', '交通 45 家 → 5/5 分', '餐饮 100+ 家 → 5/5 分', '休闲娱乐 100+ 家 → 3/3 分']}, 'competition': {'score': 24.0, 'max': 30, 'label': '中', 'tea_300m': 2}, 'consumer_scene': {'score': 12.0, 'max': 15, 'reasons': ['500m 餐饮 100 家、休闲 100 家', '最近交通直线约 202m（最近站点另有步行路径数据，见交通章节）', '办公/交通枢纽主导场景：工作日平峰（如 14:00–16:00）客流可能断崖，消费场景分已作时段性保守折算']}, 'cost': {'score': 13.3, 'max': 20, 'reasons': ['租金/营收占比 25.0%']}}",
+        "data": null
+      }
+    ]
+  },
+  "charts": {
+    "summary": [
+      "chart_scores.png"
+    ],
+    "district": [
+      "chart_poi_500.png"
+    ],
+    "competition": [
+      "chart_competition.png",
+      "chart_distance_bands.png"
+    ]
+  },
+  "errors": [],
+  "exports": {
+    "png": "analysis.png",
+    "svg": "analysis.svg",
+    "docx": "report.docx"
+  }
+}

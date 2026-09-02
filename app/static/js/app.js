@@ -2,6 +2,7 @@
 
   const STORAGE_KEY = "siteAssessorSession";
   const KEYS_STORAGE = "siteAssessorKeys";
+  const DEMO_REPORT_ID = "demo_a";
 
   const stepAuth = document.getElementById("stepAuth");
   const stepProfile = document.getElementById("stepProfile");
@@ -94,7 +95,7 @@
     demoIdInput.value = "";
   });
   document.getElementById("demoA").addEventListener("click", function () {
-    startDemoReport();
+    openPrebuiltDemoReport();
   });
   form.addEventListener("submit", onSubmit);
 
@@ -450,7 +451,7 @@
     amapSecurityCode = "";
     amapKeyHidden.value = "";
     saveSession();
-    showStep2("演示模式：无需 Key，正在生成演示报告…");
+    showStep2("演示模式：无需 Key，可点「演示点」直接查看内置报告。");
     showDemoMapPlaceholder();
     btnSearchPlace.disabled = true;
   }
@@ -1169,8 +1170,13 @@
 
 
   function startDemoReport() {
+    openPrebuiltDemoReport();
+  }
+
+  function openPrebuiltDemoReport() {
+    errorBox.classList.add("hidden");
     onSkipToDemo();
-    loadDemo("demo_a", 121.473701, 31.230416, "地图选点");
+    loadDemo(DEMO_REPORT_ID, 121.473701, 31.230416, "地图选点");
     document.getElementById("city").value = "上海市";
     const rentInput = document.querySelector('[name="rent"]');
     const revenueInput = document.querySelector('[name="revenue"]');
@@ -1178,7 +1184,8 @@
     if (rentInput) rentInput.value = "5000";
     if (revenueInput) revenueInput.value = "20000";
     if (brandSelect) brandSelect.value = "";
-    generateReport();
+    saveSession();
+    window.location.href = "/report/" + DEMO_REPORT_ID;
   }
 
 

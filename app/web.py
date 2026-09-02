@@ -28,6 +28,7 @@ from app.users import (
 )
 
 from app.paths import OUTPUT_DIR, ROOT
+from app.pipeline.demo_bundle import bundle_asset_path, has_prebuilt, load_prebuilt
 
 try:
     from dotenv import load_dotenv
@@ -414,6 +415,14 @@ async def api_generate(
     session_token: Optional[str] = Cookie(default=None, alias=SESSION_COOKIE),
 ):
     _check_rate_limit(request)
+    demo_id = (demo_id or "").strip()
+    if demo_id and has_prebuilt(demo_id):
+        try:
+            result = load_prebuilt(demo_id)
+            logger.info("generate_ok report_id=%s demo=prebuilt", result.get("report_id"))
+            return JSONResponse({"ok": True, "report_id": result["report_id"], "result": result})
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
     resolved_key = _resolve_web_key(session_token, amap_key, demo_id=demo_id)
     if not (demo_id or "").strip() and not resolved_key:
         raise HTTPException(status_code=400, detail="未配置 Web 服务 Key，请在个人中心填写或使用演示点")
@@ -537,7 +546,9 @@ async def download(report_id: str, file_type: str):
     key = mapping.get(file_type)
     if not key or key not in exports:
         raise HTTPException(status_code=404, detail="文件不存在")
-    path = OUTPUT_DIR / report_id / Path(exports[key]).name
+    filename = Path(exports[key]).name
+    bundled = bundle_asset_path(report_id, filename)
+    path = bundled if bundled else OUTPUT_DIR / report_id / filename
     if not path.exists():
         raise HTTPException(status_code=404, detail="文件不存在")
     media = {
@@ -552,13 +563,18 @@ async def download(report_id: str, file_type: str):
 async def download_chart(report_id: str, chart_name: str):
     if ".." in chart_name or "/" in chart_name or "\\" in chart_name:
         raise HTTPException(status_code=400, detail="非法文件名")
-    path = OUTPUT_DIR / report_id / chart_name
+    bundled = bundle_asset_path(report_id, chart_name)
+    path = bundled if bundled else OUTPUT_DIR / report_id / chart_name
     if not path.exists() or not path.is_file():
         raise HTTPException(status_code=404, detail="图表不存在")
     return FileResponse(path, media_type="image/png", filename=chart_name)
 
 
 def _load_result(report_id: str) -> dict:
+    try:
+        return load_prebuilt(report_id)
+    except ValueError:
+        pass
     path = OUTPUT_DIR / report_id / "result.json"
     if not path.exists():
         raise HTTPException(status_code=404, detail="报告不存在或已过期")
