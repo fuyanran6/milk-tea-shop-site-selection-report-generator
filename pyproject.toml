@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "milk-tea-shop-site-selection"
 version = "0.1.0"
@@ -12,6 +16,9 @@ dependencies = [
     "python-docx==1.1.2",
     "python-dotenv==1.0.1",
 ]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
 
 [tool.vercel]
 entrypoint = "app.main:app"
