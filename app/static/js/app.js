@@ -1,6 +1,7 @@
 (function () {
 
   const STORAGE_KEY = "siteAssessorSession";
+  const KEYS_STORAGE = "siteAssessorKeys";
 
   const stepAuth = document.getElementById("stepAuth");
   const stepProfile = document.getElementById("stepProfile");
@@ -97,6 +98,53 @@
   });
   form.addEventListener("submit", onSubmit);
 
+  function loadLocalKeys() {
+    try {
+      const raw = sessionStorage.getItem(KEYS_STORAGE);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (!data || !data.web || !data.js) return null;
+      return data;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function saveLocalKeys(web, js, sec) {
+    sessionStorage.setItem(KEYS_STORAGE, JSON.stringify({
+      web: web,
+      js: js,
+      sec: sec || "",
+    }));
+  }
+
+  function applyLocalKeys(keys) {
+    if (!keys) return false;
+    amapWebKey = keys.web || "";
+    amapJsKey = keys.js || "";
+    amapSecurityCode = keys.sec || "";
+    useAccountKeys = !!(amapWebKey && amapJsKey);
+    amapKeyHidden.value = amapWebKey;
+    saveSession();
+    return useAccountKeys;
+  }
+
+  function hasUsableKeys() {
+    if (amapWebKey && amapJsKey) return true;
+    const local = loadLocalKeys();
+    if (local) {
+      applyLocalKeys(local);
+      return true;
+    }
+    return !!(currentUser && currentUser.has_amap_keys);
+  }
+
+  function maskKey(key) {
+    if (!key) return "";
+    if (key.length <= 8) return "*".repeat(key.length);
+    return key.slice(0, 4) + "…" + key.slice(-4);
+  }
+
   function apiFetch(url, options) {
     options = options || {};
     options.credentials = "same-origin";
@@ -116,7 +164,7 @@
           restoreStep2FromSession();
           return;
         }
-        if (data.user.has_amap_keys) {
+        if (data.user.has_amap_keys || loadLocalKeys()) {
           applyUserKeys(data.user);
           showStep2("已加载您保存的高德 Key，可直接检索地点。");
           loadAmapAndInit();
@@ -158,10 +206,11 @@
   function applyUserKeys(user) {
     useAccountKeys = true;
     demoMode = false;
-    amapWebKey = "";
-    amapJsKey = user.amap_js_key || "";
-    amapSecurityCode = user.amap_security_code || "";
-    amapKeyHidden.value = "";
+    const local = loadLocalKeys();
+    amapWebKey = (local && local.web) || "";
+    amapJsKey = user.amap_js_key || (local && local.js) || "";
+    amapSecurityCode = user.amap_security_code || (local && local.sec) || "";
+    amapKeyHidden.value = amapWebKey;
     saveSession();
   }
 
@@ -198,8 +247,16 @@
     profileError.classList.add("hidden");
     profileSuccess.classList.add("hidden");
     profileWebKeyInput.value = "";
-    profileJsKeyInput.value = currentUser.has_amap_keys ? "" : "";
+    profileJsKeyInput.value = "";
     profileSecurityCodeInput.value = "";
+    const local = loadLocalKeys();
+    if (local) {
+      profileWebKeyHint.textContent = "已保存 Web Key：" + maskKey(local.web) + "（留空输入框则不修改）";
+      profileJsKeyHint.textContent = "已保存 JS Key：" + maskKey(local.js);
+    } else if (!currentUser.amap_web_key_masked) {
+      profileWebKeyHint.textContent = "尚未保存 Web 服务 Key";
+      profileJsKeyHint.textContent = "尚未保存 JS API Key";
+    }
     destroyMap();
     if (message) {
       profileSuccess.textContent = message;
@@ -230,7 +287,7 @@
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.detail || "登录失败");
       setCurrentUser(data.user);
-      if (data.user.has_amap_keys) {
+      if (data.user.has_amap_keys || loadLocalKeys()) {
         applyUserKeys(data.user);
         showStep2("登录成功，已加载您保存的高德 Key。");
         loadAmapAndInit();
@@ -272,11 +329,20 @@
     const web = profileWebKeyInput.value.trim();
     const js = profileJsKeyInput.value.trim();
     const sec = profileSecurityCodeInput.value.trim();
-    if (!currentUser.has_amap_keys && (!web || !js)) {
+    const local = loadLocalKeys();
+    const webToSave = web || (local && local.web) || "";
+    const jsToSave = js || (local && local.js) || "";
+    const secToSave = sec || (local && local.sec) || "";
+    if (!webToSave || !jsToSave) {
       profileError.textContent = "首次保存须完整填写 Web 服务 Key 与 JS API Key";
       profileError.classList.remove("hidden");
       return;
     }
+    const btn = document.getElementById("btnSaveKeys");
+    btn.disabled = true;
+    btn.textContent = "保存中…";
+    saveLocalKeys(webToSave, jsToSave, secToSave);
+    applyLocalKeys({ web: webToSave, js: jsToSave, sec: secToSave });
     const body = new FormData();
     body.append("amap_web_key", web || "__keep__");
     body.append("amap_js_key", js || "__keep__");
@@ -285,17 +351,20 @@
       const resp = await apiFetch("/api/auth/keys", { method: "POST", body: body });
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.detail || "保存失败");
-      setCurrentUser(data.user);
-      applyUserKeys(data.user);
-      profileWebKeyInput.value = "";
-      profileJsKeyInput.value = "";
-      profileSecurityCodeInput.value = "";
-      profileSuccess.textContent = "Key 已保存，下次登录将自动使用。";
-      profileSuccess.classList.remove("hidden");
+      if (data.user) setCurrentUser(data.user);
+      profileSuccess.textContent = "Key 已保存，可直接进入下一步。";
     } catch (err) {
-      profileError.textContent = err.message || "保存失败";
-      profileError.classList.remove("hidden");
+      profileSuccess.textContent = "Key 已保存在本浏览器，可直接进入下一步。（云端同步失败：" + (err.message || "网络错误") + "）";
     }
+    profileWebKeyHint.textContent = "已保存 Web Key：" + maskKey(webToSave) + "（留空输入框则不修改）";
+    profileJsKeyHint.textContent = "已保存 JS Key：" + maskKey(jsToSave);
+    profileWebKeyInput.value = "";
+    profileJsKeyInput.value = "";
+    profileSecurityCodeInput.value = "";
+    profileSuccess.classList.remove("hidden");
+    if (currentUser) currentUser.has_amap_keys = true;
+    btn.disabled = false;
+    btn.textContent = "保存 Key";
   }
 
   function onProfileToAnalyze() {
@@ -303,8 +372,17 @@
       showAuth();
       return;
     }
-    if (!currentUser.has_amap_keys) {
-      profileError.textContent = "请先保存高德 Key";
+    profileError.classList.add("hidden");
+    const web = profileWebKeyInput.value.trim();
+    const js = profileJsKeyInput.value.trim();
+    const sec = profileSecurityCodeInput.value.trim();
+    if (web && js) {
+      saveLocalKeys(web, js, sec);
+      applyLocalKeys({ web: web, js: js, sec: sec });
+      currentUser.has_amap_keys = true;
+    }
+    if (!hasUsableKeys()) {
+      profileError.textContent = "请先填写 Web 服务 Key 与 JS API Key，并点击「保存 Key」";
       profileError.classList.remove("hidden");
       return;
     }
@@ -320,6 +398,7 @@
       /* ignore */
     }
     sessionStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(KEYS_STORAGE);
     demoMode = false;
     useAccountKeys = false;
     amapWebKey = "";
@@ -356,7 +435,7 @@
       onSkipToDemo();
       return;
     }
-    if (currentUser && currentUser.has_amap_keys) {
+    if (currentUser && (currentUser.has_amap_keys || hasUsableKeys())) {
       applyUserKeys(currentUser);
       showStep2("已恢复上次会话，可直接检索地点。");
       loadAmapAndInit();
@@ -857,7 +936,7 @@
 
       "&city=" + encodeURIComponent(city);
 
-    if (amapWebKey && amapWebKey !== "server" && !useAccountKeys) {
+    if (amapWebKey && amapWebKey !== "server") {
       url += "&amap_key=" + encodeURIComponent(amapWebKey);
     }
 
@@ -1127,7 +1206,11 @@
     }
 
     if (!demoIdInput.value) {
-      amapKeyHidden.value = "";
+      if (useAccountKeys && amapWebKey) {
+        amapKeyHidden.value = amapWebKey;
+      } else {
+        amapKeyHidden.value = "";
+      }
     }
 
 
