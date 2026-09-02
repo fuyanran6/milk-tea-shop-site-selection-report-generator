@@ -17,8 +17,6 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from app.pipeline.geocode import search_locations
-from app.pipeline.osm import format_osm_note_for_appendix, format_osm_note_for_report
 from app.users import (
     authenticate,
     create_session,
@@ -57,6 +55,11 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(title="奶茶店选址 AI 分析评估助手", lifespan=lifespan)
 templates = Jinja2Templates(directory=str(ROOT / "app" / "templates"))
+
+
+@app.get("/health")
+async def health():
+    return {"ok": True}
 
 
 def _is_meta_gray_line(stripped: str) -> bool:
@@ -203,7 +206,9 @@ def _inline_md(text: str) -> str:
 
 
 templates.env.filters["render_chapter"] = _render_chapter_content  # 备用，报告页在 Python 侧预处理
-app.mount("/static", StaticFiles(directory=str(ROOT / "app" / "static")), name="static")
+_static_dir = ROOT / "app" / "static"
+if _static_dir.is_dir():
+    app.mount("/static", StaticFiles(directory=str(_static_dir)), name="static")
 
 RATE_LIMIT = int(os.getenv("RATE_LIMIT_PER_MINUTE", "10"))
 _hits = defaultdict(list)
@@ -384,6 +389,8 @@ async def api_tips(
     if not keywords.strip():
         return JSONResponse({"tips": [], "error": "请输入地点名", "count": 0})
     try:
+        from app.pipeline.geocode import search_locations
+
         result = await search_locations(keywords, city, key)
         if result.get("error") and not result.get("tips"):
             logger.warning("tips_fail info=%s", result["error"][:80])
@@ -450,6 +457,8 @@ def _sanitize_legacy_osm_text(text: str, *, for_appendix: bool = False) -> str:
     """Old reports cached raw Overpass HTTP errors in chapter body — scrub on read."""
     if not text:
         return text
+    from app.pipeline.osm import format_osm_note_for_appendix, format_osm_note_for_report
+
     formatter = format_osm_note_for_appendix if for_appendix else format_osm_note_for_report
     if any(tok in text.lower() for tok in ("406", "not acceptable", "client error", "查询失败", "分析图将降级")):
         text = re.sub(
