@@ -204,7 +204,7 @@ _static_dir = ROOT / "app" / "static"
 if _static_dir.is_dir():
     app.mount("/static", StaticFiles(directory=str(_static_dir)), name="static")
 
-RATE_LIMIT = int(os.getenv("RATE_LIMIT_PER_MINUTE", "10"))
+RATE_LIMIT = int(os.getenv("RATE_LIMIT_PER_MINUTE") or "10")
 _hits = defaultdict(list)
 
 
