@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import json
 import shutil
 import uuid
@@ -168,8 +169,10 @@ async def run_pipeline(params: dict[str, Any]) -> dict[str, Any]:
         )
     else:
         _ensure_png(png_path, prefer=DEMO_A_MAP if is_demo else None)
-        basemap_note = map_ctx.basemap_note or "云端环境：分析图已简化（无底图渲染）"
-        basemap_ok = bool(is_demo and DEMO_A_MAP.exists())
+        basemap_note = map_ctx.basemap_note or (
+            "街道底图：高德静态地图" if map_ctx.basemap_ok else "云端环境：分析图已简化（无底图渲染）"
+        )
+        basemap_ok = map_ctx.basemap_ok or bool(is_demo and DEMO_A_MAP.exists())
 
     render_analysis_svg(features, svg_path, ctx=map_ctx)
     features["basemap_note"] = basemap_note
@@ -214,6 +217,11 @@ async def run_pipeline(params: dict[str, Any]) -> dict[str, Any]:
     }
     if docx_path.exists():
         exports["docx"] = docx_path.name
+    embedded_assets: dict[str, str] = {}
+    if svg_path.exists():
+        embedded_assets["analysis_svg"] = svg_path.read_text(encoding="utf-8")
+    if png_path.exists() and png_path.stat().st_size > 500:
+        embedded_assets["analysis_png_b64"] = base64.b64encode(png_path.read_bytes()).decode("ascii")
     result = {
         "report_id": report_id,
         "features": features,
@@ -223,6 +231,7 @@ async def run_pipeline(params: dict[str, Any]) -> dict[str, Any]:
         "charts": chart_files,
         "errors": errors,
         "exports": exports,
+        "embedded_assets": embedded_assets,
     }
     result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     return result

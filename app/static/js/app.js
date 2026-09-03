@@ -3,6 +3,8 @@
   const STORAGE_KEY = "siteAssessorSession";
   const KEYS_STORAGE = "siteAssessorKeys";
   const DEMO_REPORT_ID = "demo_a";
+  const ACCOUNTS_STORAGE = "siteAssessorAccounts";
+  const AUTH_USER_STORAGE = "siteAssessorAuthUser";
 
   const stepAuth = document.getElementById("stepAuth");
   const stepProfile = document.getElementById("stepProfile");
@@ -146,6 +148,173 @@
     return key.slice(0, 4) + "…" + key.slice(-4);
   }
 
+  function loadLocalAccounts() {
+    try {
+      const raw = localStorage.getItem(ACCOUNTS_STORAGE);
+      return raw ? JSON.parse(raw) : {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function saveLocalAccounts(accounts) {
+    localStorage.setItem(ACCOUNTS_STORAGE, JSON.stringify(accounts));
+  }
+
+  function accountKey(username) {
+    return (username || "").trim().toLowerCase();
+  }
+
+  function localUsernameTaken(username) {
+    return !!loadLocalAccounts()[accountKey(username)];
+  }
+
+  function saltToBytes(salt) {
+    const bin = atob(salt);
+    const out = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function bytesToB64(bytes) {
+    let s = "";
+    bytes.forEach(function (b) { s += String.fromCharCode(b); });
+    return btoa(s);
+  }
+
+  function randomSaltB64() {
+    const bytes = new Uint8Array(16);
+    crypto.getRandomValues(bytes);
+    return bytesToB64(bytes);
+  }
+
+  async function hashPassword(password, saltB64) {
+    const enc = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      "raw", enc.encode(password), "PBKDF2", false, ["deriveBits"]
+    );
+    const bits = await crypto.subtle.deriveBits(
+      { name: "PBKDF2", salt: saltToBytes(saltB64), iterations: 120000, hash: "SHA-256" },
+      key,
+      256
+    );
+    return Array.from(new Uint8Array(bits)).map(function (b) {
+      return b.toString(16).padStart(2, "0");
+    }).join("");
+  }
+
+  function loadLocalAuthUser() {
+    try {
+      const raw = localStorage.getItem(AUTH_USER_STORAGE);
+      return raw ? JSON.parse(raw) : null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function saveLocalAuthUser(user) {
+    if (!user) {
+      localStorage.removeItem(AUTH_USER_STORAGE);
+      return;
+    }
+    localStorage.setItem(AUTH_USER_STORAGE, JSON.stringify(user));
+  }
+
+  function toPublicUser(record, username) {
+    return {
+      id: record.id || 0,
+      username: username,
+      display_name: record.display_name || username,
+      has_amap_keys: !!record.has_amap_keys,
+      amap_web_key_masked: record.amap_web_key_masked || "",
+      amap_js_key_masked: record.amap_js_key_masked || "",
+      amap_js_key: record.amap_js_key || "",
+      amap_security_code: record.amap_security_code || "",
+      has_security_code: !!record.has_security_code,
+    };
+  }
+
+  async function registerLocalAccount(username, password, displayName) {
+    const key = accountKey(username);
+    if (loadLocalAccounts()[key]) {
+      throw new Error("用户名已被注册");
+    }
+    const salt = randomSaltB64();
+    const pwdHash = await hashPassword(password, salt);
+    const accounts = loadLocalAccounts();
+    accounts[key] = {
+      username: username.trim(),
+      display_name: (displayName || username).trim(),
+      salt: salt,
+      password_hash: pwdHash,
+      has_amap_keys: false,
+    };
+    saveLocalAccounts(accounts);
+    const user = toPublicUser(accounts[key], accounts[key].username);
+    saveLocalAuthUser(user);
+    return user;
+  }
+
+  async function loginLocalAccount(username, password) {
+    const key = accountKey(username);
+    const record = loadLocalAccounts()[key];
+    if (!record) {
+      throw new Error("用户名或密码错误");
+    }
+    const pwdHash = await hashPassword(password, record.salt);
+    if (pwdHash !== record.password_hash) {
+      throw new Error("用户名或密码错误");
+    }
+    const user = toPublicUser(record, record.username);
+    saveLocalAuthUser(user);
+    return user;
+  }
+
+  function syncLocalAccountKeys() {
+    const user = loadLocalAuthUser();
+    if (!user) return;
+    const keys = loadLocalKeys();
+    if (!keys) return;
+    const accounts = loadLocalAccounts();
+    const rec = accounts[accountKey(user.username)];
+    if (!rec) return;
+    rec.has_amap_keys = true;
+    rec.amap_js_key = keys.js;
+    rec.amap_security_code = keys.sec || "";
+    rec.has_security_code = !!keys.sec;
+    rec.amap_web_key_masked = maskKey(keys.web);
+    rec.amap_js_key_masked = maskKey(keys.js);
+    saveLocalAccounts(accounts);
+    user.has_amap_keys = true;
+    user.amap_js_key = keys.js;
+    user.amap_security_code = keys.sec || "";
+    user.has_security_code = !!keys.sec;
+    user.amap_web_key_masked = rec.amap_web_key_masked;
+    user.amap_js_key_masked = rec.amap_js_key_masked;
+    saveLocalAuthUser(user);
+    if (currentUser && currentUser.username === user.username) {
+      setCurrentUser(user);
+    }
+  }
+
+  async function checkUsernameAvailable(username) {
+    const u = (username || "").trim();
+    if (!u) return { ok: false, message: "请输入用户名" };
+    if (localUsernameTaken(u)) {
+      return { ok: false, message: "用户名已被注册" };
+    }
+    try {
+      const resp = await apiFetch("/api/auth/check-username?username=" + encodeURIComponent(u));
+      const data = await resp.json();
+      if (!data.available) {
+        return { ok: false, message: data.detail || "用户名已被注册" };
+      }
+    } catch (err) {
+      /* 云端不可用时仅依赖本机校验 */
+    }
+    return { ok: true };
+  }
+
   function apiFetch(url, options) {
     options = options || {};
     options.credentials = "same-origin";
@@ -156,12 +325,38 @@
   initApp();
 
   async function initApp() {
+    const step2Return = urlParams.get("step") === "2" && sessionStorage.getItem(STORAGE_KEY);
+    const localUser = loadLocalAuthUser();
+    if (localUser) {
+      setCurrentUser(localUser);
+      if (step2Return) {
+        restoreStep2FromSession();
+        return;
+      }
+      if (localUser.has_amap_keys || loadLocalKeys()) {
+        applyUserKeys(localUser);
+        showStep2("已加载您保存的高德 Key，可直接检索地点。");
+        loadAmapAndInit();
+        return;
+      }
+      showProfile();
+      return;
+    }
+    if (step2Return) {
+      ensureKeysBeforeGenerate();
+      if (hasUsableKeys()) {
+        showStep2("已恢复上次会话，可直接检索地点。");
+        loadAmapAndInit();
+        return;
+      }
+    }
     try {
       const resp = await apiFetch("/api/auth/me");
       const data = await resp.json();
       if (data.logged_in && data.user) {
         setCurrentUser(data.user);
-        if (urlParams.get("step") === "2" && sessionStorage.getItem(STORAGE_KEY)) {
+        saveLocalAuthUser(data.user);
+        if (step2Return) {
           restoreStep2FromSession();
           return;
         }
@@ -176,6 +371,11 @@
       }
     } catch (err) {
       /* ignore */
+    }
+    if (step2Return && hasUsableKeys()) {
+      showStep2("已恢复上次会话，可直接检索地点。");
+      loadAmapAndInit();
+      return;
     }
     showAuth();
   }
@@ -280,23 +480,36 @@
   async function onLoginSubmit(e) {
     e.preventDefault();
     hideAuthError();
-    const body = new FormData();
-    body.append("username", document.getElementById("loginUsername").value.trim());
-    body.append("password", document.getElementById("loginPassword").value);
+    const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    let user;
     try {
-      const resp = await apiFetch("/api/auth/login", { method: "POST", body: body });
-      const data = await resp.json();
-      if (!resp.ok) throw new Error(data.detail || "登录失败");
-      setCurrentUser(data.user);
-      if (data.user.has_amap_keys || loadLocalKeys()) {
-        applyUserKeys(data.user);
-        showStep2("登录成功，已加载您保存的高德 Key。");
-        loadAmapAndInit();
-      } else {
-        showProfile("登录成功！请先在个人中心填写高德 Key。");
-      }
+      user = await loginLocalAccount(username, password);
     } catch (err) {
       showAuthError(err.message || "登录失败");
+      return;
+    }
+    setCurrentUser(user);
+    try {
+      const body = new FormData();
+      body.append("username", username);
+      body.append("password", password);
+      const resp = await apiFetch("/api/auth/login", { method: "POST", body: body });
+      const data = await resp.json();
+      if (resp.ok && data.user) {
+        setCurrentUser(data.user);
+        saveLocalAuthUser(data.user);
+        user = data.user;
+      }
+    } catch (err) {
+      /* 云端登录失败时仍可使用本机账号 */
+    }
+    if (user.has_amap_keys || loadLocalKeys()) {
+      applyUserKeys(user);
+      showStep2("登录成功，已加载您保存的高德 Key。");
+      loadAmapAndInit();
+    } else {
+      showProfile("登录成功！请先在个人中心填写高德 Key。");
     }
   }
 
@@ -309,19 +522,37 @@
       showAuthError("两次输入的密码不一致");
       return;
     }
-    const body = new FormData();
-    body.append("username", document.getElementById("registerUsername").value.trim());
-    body.append("password", pwd);
-    body.append("display_name", document.getElementById("registerDisplayName").value.trim());
+    const username = document.getElementById("registerUsername").value.trim();
+    const displayName = document.getElementById("registerDisplayName").value.trim();
+    const avail = await checkUsernameAvailable(username);
+    if (!avail.ok) {
+      showAuthError(avail.message);
+      return;
+    }
+    let user;
     try {
-      const resp = await apiFetch("/api/auth/register", { method: "POST", body: body });
-      const data = await resp.json();
-      if (!resp.ok) throw new Error(data.detail || "注册失败");
-      setCurrentUser(data.user);
-      showProfile("注册成功！请填写高德 Key 并保存。");
+      user = await registerLocalAccount(username, pwd, displayName);
     } catch (err) {
       showAuthError(err.message || "注册失败");
+      return;
     }
+    try {
+      const body = new FormData();
+      body.append("username", username);
+      body.append("password", pwd);
+      body.append("display_name", displayName);
+      const resp = await apiFetch("/api/auth/register", { method: "POST", body: body });
+      const data = await resp.json();
+      if (resp.ok && data.user) {
+        setCurrentUser(data.user);
+        saveLocalAuthUser(data.user);
+        user = data.user;
+      }
+    } catch (err) {
+      /* 云端注册失败时本机账号仍可用 */
+    }
+    setCurrentUser(user);
+    showProfile("注册成功！请填写高德 Key 并保存。");
   }
 
   async function onSaveKeys() {
@@ -364,6 +595,7 @@
     profileSecurityCodeInput.value = "";
     profileSuccess.classList.remove("hidden");
     if (currentUser) currentUser.has_amap_keys = true;
+    syncLocalAccountKeys();
     btn.disabled = false;
     btn.textContent = "保存 Key";
   }
@@ -400,6 +632,7 @@
     }
     sessionStorage.removeItem(STORAGE_KEY);
     sessionStorage.removeItem(KEYS_STORAGE);
+    saveLocalAuthUser(null);
     demoMode = false;
     useAccountKeys = false;
     amapWebKey = "";
@@ -436,11 +669,15 @@
       onSkipToDemo();
       return;
     }
-    if (currentUser && (currentUser.has_amap_keys || hasUsableKeys())) {
+    ensureKeysBeforeGenerate();
+    if (currentUser && (currentUser.has_amap_keys || loadLocalKeys())) {
       applyUserKeys(currentUser);
-      showStep2("已恢复上次会话，可直接检索地点。");
-      loadAmapAndInit();
+    } else if (hasUsableKeys()) {
+      const local = loadLocalKeys();
+      if (local) applyLocalKeys(local);
     }
+    showStep2("已恢复上次会话，可直接检索地点。");
+    if (!demoMode) loadAmapAndInit();
   }
 
   function onSkipToDemo() {

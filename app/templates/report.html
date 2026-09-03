@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>可行性报告 · {{ result.features.address }}</title>
-  <link rel="stylesheet" href="/static/css/style.css?v=13">
+  <link rel="stylesheet" href="/static/css/style.css?v=14">
 </head>
 <body>
   <header class="header compact">
@@ -58,7 +58,13 @@
       </div>
       {% endif %}
       {% if ch.key == 'map' %}
+      {% if result.embedded_assets and result.embedded_assets.get('analysis_svg') %}
+      <div class="analysis-map-svg">{{ result.embedded_assets.analysis_svg | safe }}</div>
+      {% elif result.embedded_assets and result.embedded_assets.get('analysis_png_b64') %}
+      <img src="data:image/png;base64,{{ result.embedded_assets.analysis_png_b64 }}" alt="选址分析图" class="analysis-map">
+      {% else %}
       <img src="/download/{{ report_id }}/png" alt="选址分析图" class="analysis-map">
+      {% endif %}
       {% endif %}
     </section>
     {% endfor %}

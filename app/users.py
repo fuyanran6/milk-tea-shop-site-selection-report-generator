@@ -114,6 +114,18 @@ def validate_password(password: str) -> Optional[str]:
     return None
 
 
+def username_exists(username: str) -> bool:
+    username = (username or "").strip()
+    if not username:
+        return False
+    with _connect() as conn:
+        row = conn.execute(
+            "SELECT 1 FROM users WHERE username = ? COLLATE NOCASE",
+            (username,),
+        ).fetchone()
+    return row is not None
+
+
 def register_user(username: str, password: str, display_name: str = "") -> dict[str, Any]:
     err = validate_username(username) or validate_password(password)
     if err:

@@ -76,6 +76,15 @@ def _to_px(lng: float, lat: float, ctx: MapLayerContext) -> tuple[float, float]:
 
 def _group_basemap(ctx: MapLayerContext) -> str:
     ox, oy = _map_offset()
+    if ctx.basemap_data_uri:
+        href = ctx.basemap_data_uri.replace('"', "%22")
+        return (
+            f'<g id="basemap">'
+            f'<image xlink:href="{href}" href="{href}" '
+            f'x="{ox:.2f}" y="{oy:.2f}" width="{MAP_W}" height="{MAP_H}" '
+            f'preserveAspectRatio="xMidYMid meet"/>'
+            f"</g>"
+        )
     if ctx.basemap_image is not None:
         from PIL import Image
 

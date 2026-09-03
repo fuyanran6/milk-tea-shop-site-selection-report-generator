@@ -26,6 +26,8 @@ from app.users import (
     init_db,
     register_user,
     update_user_keys,
+    username_exists,
+    validate_username,
 )
 
 from app.paths import OUTPUT_DIR, ROOT
@@ -281,6 +283,17 @@ async def api_auth_me(user: Optional[dict] = Depends(_current_user)):
     if not user:
         return JSONResponse({"logged_in": False})
     return JSONResponse({"logged_in": True, "user": user})
+
+
+@app.get("/api/auth/check-username")
+async def api_auth_check_username(username: str = Query("")):
+    name = (username or "").strip()
+    if not name:
+        return JSONResponse({"available": False, "detail": "请输入用户名"})
+    err = validate_username(name)
+    if err:
+        return JSONResponse({"available": False, "detail": err})
+    return JSONResponse({"available": not username_exists(name)})
 
 
 @app.post("/api/auth/register")

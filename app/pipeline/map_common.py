@@ -43,6 +43,7 @@ class MapLayerContext:
     basemap_note: str
     basemap_ok: bool
     basemap_image: Optional[Any] = None
+    basemap_data_uri: Optional[str] = None
     tea_near: list[tuple[float, float]] = field(default_factory=list)
     tea_other: list[tuple[float, float]] = field(default_factory=list)
     indirect: list[tuple[float, float]] = field(default_factory=list)
@@ -75,6 +76,7 @@ def build_map_context(
     cos_lat = max(0.7, abs(math.cos(math.radians(lat))))
 
     basemap_image = None
+    basemap_data_uri = None
     basemap_note = ""
     basemap_ok = False
     extent = analysis_extent(lng, lat, cos_lat)
@@ -83,7 +85,15 @@ def build_map_context(
         basemap_image, basemap_note = basemap_override
         basemap_ok = True
     elif amap_key:
-        basemap_image, extent, basemap_note, basemap_ok = fetch_amap_basemap(lng, lat, amap_key)
+        from app.pipeline.runtime import imaging_stack_available
+
+        if imaging_stack_available():
+            basemap_image, extent, basemap_note, basemap_ok = fetch_amap_basemap(lng, lat, amap_key)
+        else:
+            raw, extent, basemap_note, basemap_ok = fetch_amap_basemap_raw(lng, lat, amap_key)
+            if raw and basemap_ok:
+                mime = "image/jpeg" if raw[:2] == b"\xff\xd8" else "image/png"
+                basemap_data_uri = f"data:{mime};base64,{base64.b64encode(raw).decode('ascii')}"
         if not basemap_ok:
             logger.warning("amap_basemap_fail lng=%s lat=%s note=%s", lng, lat, basemap_note)
 
@@ -98,6 +108,7 @@ def build_map_context(
         basemap_note=basemap_note,
         basemap_ok=basemap_ok,
         basemap_image=basemap_image,
+        basemap_data_uri=basemap_data_uri,
         tea_near=tea_near,
         tea_other=tea_other,
         indirect=indirect_pts,
@@ -147,14 +158,58 @@ def _collect_map_points(
     return tea_near, tea_other, indirect_pts, transit_pts
 
 
+def fetch_amap_basemap_raw(
+    lng: float, lat: float, key: str,
+) -> tuple[Optional[bytes], list[float], str, bool]:
+    """Fetch static map bytes without Pillow (for Vercel serverless)."""
+    width, height = BASEMAP_IMG_SIZE, BASEMAP_IMG_SIZE
+    scale = BASEMAP_IMG_SCALE
+    pixel_size = width * scale
+    target_half_m = MAP_VIEW_RADIUS_M * MAP_VIEW_PADDING
+    zoom = compute_basemap_zoom(lat, target_half_m, pixel_size)
+    params = {
+        "location": f"{lng},{lat}",
+        "zoom": str(zoom),
+        "size": f"{width}*{height}",
+        "scale": str(scale),
+        "key": key,
+    }
+    cos_lat = max(0.7, abs(math.cos(math.radians(lat))))
+    extent = analysis_extent(lng, lat, cos_lat)
+    last_err = ""
+    for attempt in range(3):
+        try:
+            with httpx.Client(timeout=25.0, trust_env=False) as client:
+                resp = client.get("https://restapi.amap.com/v3/staticmap", params=params)
+                resp.raise_for_status()
+                ctype = resp.headers.get("content-type", "")
+                if "json" in ctype or resp.content[:1] == b"{":
+                    try:
+                        payload = resp.json()
+                        info = payload.get("info") or payload.get("infocode") or str(payload)[:120]
+                    except json.JSONDecodeError:
+                        info = resp.text[:120]
+                    return None, extent, f"高德静态底图获取失败（{info}），仅显示分析图层", False
+                extent = static_map_extent(lng, lat, zoom, pixel_size, pixel_size)
+                return resp.content, extent, "街道底图：高德静态地图", True
+        except Exception as exc:
+            last_err = str(exc)[:120]
+            if attempt < 2:
+                time.sleep(0.6 * (attempt + 1))
+    note = f"高德静态底图获取失败（{last_err or '网络请求失败'}），仅显示分析图层"
+    return None, extent, note, False
+
+
 def fetch_amap_basemap(
     lng: float, lat: float, key: str,
 ) -> tuple[Optional[Any], list[float], str, bool]:
     from app.pipeline.runtime import imaging_stack_available
 
     if not imaging_stack_available():
-        cos_lat = max(0.7, abs(math.cos(math.radians(lat))))
-        return None, analysis_extent(lng, lat, cos_lat), "云端环境未加载图像库，仅显示分析图层", False
+        raw, extent, note, ok = fetch_amap_basemap_raw(lng, lat, key)
+        if not ok or not raw:
+            return None, extent, note, ok
+        return None, extent, note, True
 
     from PIL import Image
 
