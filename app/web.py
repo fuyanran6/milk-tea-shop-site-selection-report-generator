@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import base64
 import json
 import logging
 import os
@@ -13,7 +14,7 @@ from pathlib import Path
 from typing import Optional
 
 from fastapi import Cookie, Depends, FastAPI, Form, HTTPException, Query, Request, Response
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -563,6 +564,101 @@ async def report_page(request: Request, report_id: str):
             "request": request,
             "report_id": report_id,
         })
+
+
+@app.post("/api/download-export")
+async def api_download_export(request: Request):
+    """Generate export files from client-held report payload (Vercel / sessionStorage)."""
+    try:
+        payload = await request.json()
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="无效请求") from exc
+
+    report_id = (payload.get("report_id") or "").strip()
+    result = payload.get("result")
+    file_type = (payload.get("file_type") or "").strip().lower()
+    png_b64 = (payload.get("png_b64") or "").strip()
+
+    if not report_id or not isinstance(result, dict):
+        raise HTTPException(status_code=400, detail="缺少报告数据")
+
+    embedded = result.get("embedded_assets") or {}
+    mapping = {"word": "docx", "png": "png", "svg": "svg", "docx": "docx"}
+    file_type = mapping.get(file_type, file_type)
+
+    if file_type == "svg":
+        svg = embedded.get("analysis_svg")
+        if not svg:
+            raise HTTPException(status_code=404, detail="分析图 SVG 不可用")
+        return Response(
+            content=svg.encode("utf-8"),
+            media_type="image/svg+xml",
+            headers={"Content-Disposition": f'attachment; filename="analysis_{report_id}.svg"'},
+        )
+
+    if file_type == "png":
+        b64 = png_b64 or embedded.get("analysis_png_b64") or ""
+        if not b64:
+            raise HTTPException(status_code=400, detail="PNG 数据不可用")
+        try:
+            data = base64.b64decode(b64)
+        except Exception as exc:
+            raise HTTPException(status_code=400, detail="PNG 数据无效") from exc
+        return Response(
+            content=data,
+            media_type="image/png",
+            headers={"Content-Disposition": f'attachment; filename="analysis_{report_id}.png"'},
+        )
+
+    if file_type == "docx":
+        docx_b64 = embedded.get("report_docx_b64") or ""
+        if docx_b64:
+            try:
+                data = base64.b64decode(docx_b64)
+            except Exception as exc:
+                raise HTTPException(status_code=400, detail="Word 数据无效") from exc
+            return Response(
+                content=data,
+                media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                headers={"Content-Disposition": f'attachment; filename="report_{report_id}.docx"'},
+            )
+
+        from app.pipeline.export_docx import export_docx
+        from app.pipeline.pipeline import _ensure_png
+
+        import tempfile
+
+        features = result.get("features") or {}
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            png_path = tmp_path / "analysis.png"
+            docx_path = tmp_path / "report.docx"
+            if png_b64 or embedded.get("analysis_png_b64"):
+                try:
+                    png_path.write_bytes(base64.b64decode(png_b64 or embedded["analysis_png_b64"]))
+                except Exception as exc:
+                    raise HTTPException(status_code=400, detail="分析图 PNG 无效") from exc
+            else:
+                _ensure_png(png_path)
+            meta = {
+                "address": features.get("address", ""),
+                "generated_at": features.get("query_time", ""),
+                "report_id": report_id,
+                "is_demo": features.get("data_source") == "demo",
+            }
+            try:
+                export_docx(result.get("report") or {}, png_path, docx_path, meta)
+            except Exception as exc:
+                logger.exception("docx_export_fail")
+                raise HTTPException(status_code=500, detail=f"Word 导出失败：{type(exc).__name__}") from exc
+            data = docx_path.read_bytes()
+        return Response(
+            content=data,
+            media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            headers={"Content-Disposition": f'attachment; filename="report_{report_id}.docx"'},
+        )
+
+    raise HTTPException(status_code=400, detail="不支持的文件类型")
 
 
 @app.get("/download/{report_id}/{file_type}")

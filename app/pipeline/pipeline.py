@@ -215,9 +215,13 @@ async def run_pipeline(params: dict[str, Any]) -> dict[str, Any]:
         "png": png_path.name,
         "svg": svg_path.name,
     }
+    embedded_assets: dict[str, str] = {}
     if docx_path.exists():
         exports["docx"] = docx_path.name
-    embedded_assets: dict[str, str] = {}
+        try:
+            embedded_assets["report_docx_b64"] = base64.b64encode(docx_path.read_bytes()).decode("ascii")
+        except OSError:
+            pass
     if svg_path.exists():
         embedded_assets["analysis_svg"] = svg_path.read_text(encoding="utf-8")
     if png_path.exists() and png_path.stat().st_size > 500:
