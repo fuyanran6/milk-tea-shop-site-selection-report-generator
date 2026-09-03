@@ -19,7 +19,8 @@ logger = logging.getLogger(__name__)
 
 METERS_PER_DEG_LAT = 111320
 MAP_VIEW_RADIUS_M = 1000
-MAP_VIEW_PADDING = 1.38
+# 底图边距：略大于 1000m 分析圆即可（原 1.38 会落到更低 zoom，底图过宽）
+MAP_VIEW_PADDING = 1.06
 BASEMAP_IMG_SIZE = 512
 BASEMAP_IMG_SCALE = 2
 
@@ -58,12 +59,20 @@ def analysis_extent(lng: float, lat: float, cos_lat: float) -> list[float]:
 
 
 def compute_basemap_zoom(lat: float, target_half_m: float, img_pixels: int) -> int:
+    """Pick zoom whose half-image span is closest to target (prefer tighter view)."""
     cos_lat = max(0.7, abs(math.cos(math.radians(lat))))
-    for zoom in range(18, 9, -1):
+    best_zoom = 10
+    best_diff = float("inf")
+    for zoom in range(10, 19):
         mpp = 156543.03392 * cos_lat / (2 ** zoom)
-        if (img_pixels / 2) * mpp >= target_half_m:
-            return zoom
-    return 10
+        half_m = (img_pixels / 2) * mpp
+        if half_m < target_half_m * 0.95:
+            continue
+        diff = abs(half_m - target_half_m)
+        if diff < best_diff:
+            best_diff = diff
+            best_zoom = zoom
+    return best_zoom
 
 
 def build_map_context(
@@ -242,7 +251,7 @@ def fetch_amap_basemap(
                         f"高德静态底图获取失败（{info}），仅显示分析图层"
                     ), False
                 img = Image.open(io.BytesIO(resp.content)).convert("RGB")
-                extent = static_map_extent(lng, lat, zoom, pixel_size, pixel_size)
+                img, extent = _finalize_basemap(lng, lat, zoom, pixel_size, img)
                 return img, extent, "街道底图：高德静态地图", True
         except Exception as exc:
             last_err = str(exc)[:120]
@@ -251,6 +260,44 @@ def fetch_amap_basemap(
     cos_lat = max(0.7, abs(math.cos(math.radians(lat))))
     note = f"高德静态底图获取失败（{last_err or '网络请求失败'}），仅显示分析图层"
     return None, analysis_extent(lng, lat, cos_lat), note, False
+
+
+def _crop_image_to_extent(img: Any, lng: float, lat: float, full_extent: list[float], target_extent: list[float]) -> Any:
+    from PIL import Image
+
+    if not isinstance(img, Image.Image):
+        return img
+    w, h = img.size
+    x0, y0 = geo_to_pixel(target_extent[0], target_extent[3], full_extent, w, h)
+    x1, y1 = geo_to_pixel(target_extent[1], target_extent[2], full_extent, w, h)
+    left = max(0, int(min(x0, x1)))
+    right = min(w, int(max(x0, x1)))
+    top = max(0, int(min(y0, y1)))
+    bottom = min(h, int(max(y0, y1)))
+    if right - left < 32 or bottom - top < 32:
+        return img
+    return img.crop((left, top, right, bottom))
+
+
+def _finalize_basemap(
+    lng: float,
+    lat: float,
+    zoom: int,
+    pixel_size: int,
+    img: Any,
+) -> tuple[Any, list[float]]:
+    """Align basemap geographic extent with analysis overlay bounds."""
+    cos_lat = max(0.7, abs(math.cos(math.radians(lat))))
+    target_extent = analysis_extent(lng, lat, cos_lat)
+    full_extent = static_map_extent(lng, lat, zoom, pixel_size, pixel_size)
+    full_half_m = (
+        (full_extent[1] - full_extent[0]) * METERS_PER_DEG_LAT * cos_lat / 2
+    )
+    target_half_m = MAP_VIEW_RADIUS_M * MAP_VIEW_PADDING
+    if full_half_m > target_half_m * 1.12:
+        cropped = _crop_image_to_extent(img, lng, lat, full_extent, target_extent)
+        return cropped, target_extent
+    return img, full_extent
 
 
 def static_map_extent(lng: float, lat: float, zoom: int, width: int, height: int) -> list[float]:
