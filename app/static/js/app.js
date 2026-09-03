@@ -1200,9 +1200,26 @@
 
 
 
+  function ensureKeysBeforeGenerate() {
+    if (!amapWebKey || !amapJsKey) {
+      const local = loadLocalKeys();
+      if (local) applyLocalKeys(local);
+    }
+  }
+
+  function formatGenerateError(err) {
+    const msg = (err && err.message) ? err.message : String(err || "");
+    if (msg === "Failed to fetch" || msg.indexOf("NetworkError") >= 0 || msg.indexOf("Load failed") >= 0) {
+      return "网络连接失败：国内访问 Vercel 可能不稳定，可开梯子重试，或先点「演示点」查看内置报告。";
+    }
+    return msg || "生成失败，请稍后重试或使用演示点";
+  }
+
   async function generateReport() {
 
     errorBox.classList.add("hidden");
+
+    ensureKeysBeforeGenerate();
 
 
 
@@ -1270,7 +1287,7 @@
 
     } catch (err) {
 
-      errorBox.textContent = err.message;
+      errorBox.textContent = formatGenerateError(err);
 
       errorBox.classList.remove("hidden");
 

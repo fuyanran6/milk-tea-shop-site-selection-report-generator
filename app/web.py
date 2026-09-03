@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import os
@@ -445,15 +446,28 @@ async def api_generate(
     try:
         from app.pipeline.pipeline import run_pipeline
 
-        result = await run_pipeline(params)
+        result = await asyncio.wait_for(run_pipeline(params), timeout=55.0)
         logger.info("generate_ok report_id=%s demo=%s", result["report_id"], bool(demo_id))
         return JSONResponse({"ok": True, "report_id": result["report_id"], "result": result})
+    except asyncio.TimeoutError:
+        logger.error("generate_fail reason=timeout")
+        raise HTTPException(
+            status_code=504,
+            detail="生成超时（云端查询较慢），请稍后重试或先使用「演示点」体验",
+        )
     except ValueError as exc:
-        logger.warning("generate_fail reason=user_input")
+        logger.warning("generate_fail reason=user_input detail=%s", str(exc)[:120])
+        raise HTTPException(status_code=400, detail=str(exc))
+    except RuntimeError as exc:
+        logger.warning("generate_fail reason=runtime detail=%s", str(exc)[:120])
         raise HTTPException(status_code=400, detail=str(exc))
     except Exception as exc:
-        logger.error("generate_fail code=%s", type(exc).__name__)
-        raise HTTPException(status_code=500, detail="生成失败，请稍后重试或使用演示点")
+        logger.exception("generate_fail code=%s", type(exc).__name__)
+        detail = str(exc).strip() or type(exc).__name__
+        raise HTTPException(
+            status_code=500,
+            detail=f"生成失败：{detail[:180]}。可稍后重试或使用「演示点」",
+        )
 
 
 def _sanitize_legacy_osm_text(text: str, *, for_appendix: bool = False) -> str:

@@ -200,9 +200,20 @@ async def run_pipeline(params: dict[str, Any]) -> dict[str, Any]:
         "report_id": report_id,
         "is_demo": is_demo,
     }
-    export_docx(report, png_path, docx_path, meta)
+    try:
+        export_docx(report, png_path, docx_path, meta)
+    except Exception as exc:
+        errors.append(f"Word 导出跳过：{type(exc).__name__}")
+        if docx_path.exists():
+            docx_path.unlink(missing_ok=True)
 
     result_path = out_dir / "result.json"
+    exports = {
+        "png": png_path.name,
+        "svg": svg_path.name,
+    }
+    if docx_path.exists():
+        exports["docx"] = docx_path.name
     result = {
         "report_id": report_id,
         "features": features,
@@ -211,11 +222,7 @@ async def run_pipeline(params: dict[str, Any]) -> dict[str, Any]:
         "report": report,
         "charts": chart_files,
         "errors": errors,
-        "exports": {
-            "png": png_path.name,
-            "svg": svg_path.name,
-            "docx": docx_path.name,
-        },
+        "exports": exports,
     }
     result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     return result

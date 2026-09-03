@@ -9,11 +9,13 @@ from typing import Any, Optional
 
 import httpx
 
+from app.paths import is_vercel
+
 AMAP_BASE = "https://restapi.amap.com/v3"
 
 # 个人开发者 Key 并发/QPS 较低，请求串行并限速
 _REQUEST_LOCK = asyncio.Lock()
-_MIN_REQUEST_GAP_SEC = 0.28
+_MIN_REQUEST_GAP_SEC = 0.28 if not is_vercel() else 0.12
 
 TEA_KEYWORDS = "奶茶|茶饮|柠檬茶|果茶|喜茶|奈雪|茶百道|古茗|蜜雪冰城|CoCo都可|一点点|沪上阿姨|书亦"
 
@@ -41,11 +43,12 @@ CATEGORY_TYPES = {
 }
 
 CATEGORY_FETCH_PAGE_SIZE = 25
-CATEGORY_FETCH_MAX_PAGES = 4  # 单类最多拉取 100 条（4 页 × 25）
+CATEGORY_FETCH_MAX_PAGES = 2 if is_vercel() else 4
+TEA_FETCH_MAX_PAGES = 2 if is_vercel() else 3
 CATEGORY_FETCH_CAP = CATEGORY_FETCH_PAGE_SIZE * CATEGORY_FETCH_MAX_PAGES
 
 # 国内高德直连；系统代理常导致 ConnectError（浏览器 JS 不受影响）
-_AMAP_HTTPX_KW = {"timeout": 120.0, "trust_env": False}
+_AMAP_HTTPX_KW = {"timeout": 45.0 if is_vercel() else 120.0, "trust_env": False}
 
 _QPS_MARKERS = ("CUQPS", "QPS", "EXCEEDED", "访问过于频繁", "超限")
 
@@ -165,7 +168,7 @@ async def _search_tea(
     if own:
         client = httpx.AsyncClient(timeout=30.0, trust_env=False)
     try:
-        for page in range(1, 4):
+        for page in range(1, TEA_FETCH_MAX_PAGES + 1):
             params = {
                 "key": key,
                 "location": f"{lng},{lat}",
@@ -400,7 +403,7 @@ async def _search_transit(
     for i, poi in enumerate(sorted(unique, key=lambda p: float(p.get("distance", 99999)))[:12]):
         dist = int(float(poi.get("distance", 0)))
         ttype = "subway" if "地铁" in poi.get("type", "") or "150500" in str(poi.get("typecode", "")) else "bus"
-        if i == 0 and client:
+        if i == 0 and client and not is_vercel():
             walk_dist, walk_note = await _walking_distance(lng, lat, poi, key, client)
         else:
             walk_dist, walk_note = None, "仅直线距离"
